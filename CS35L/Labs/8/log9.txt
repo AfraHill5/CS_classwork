@@ -1,0 +1,74 @@
+Zach North
+603 885 768
+Lab 9 Log
+
+I needed to get 200,000 bytes or so of random characters using the od
+command. The command I entered to do so was
+
+$ od --address-radix=n --read-bytes=200000 --format=fD /dev/urandom > random.txt
+
+I set the address radix to none so the file offset would not be included.
+Read-bytes specified 200k bytes to read in, and the format is
+double precision floating point. I read the bytes from /dev/urandom.
+
+This gave me a large text file filled with random bytes called random.txt.
+My next order of business was to make sure that each number was on a line
+by itself. I used tr to translate each space into a newline character, 
+squeezing out duplicates. This command was
+
+$ tr -s '[:space:]' '\n' < random.txt > randomFormatted.txt
+
+The -s option is to squeeze out and ignore duplicate spaces in a row.
+This left randomFormatted.txt with one double per line.
+
+Note that this method left randomFormatted.txt with an extra blank row
+on the first row of the document. I simply deleted this manually and
+continued.
+
+The next order of business is to time the sort command. I used the command
+
+$ /usr/bin/time -p /usr/local/cs/bin/sort -g randomFormatted.txt > /dev/null
+
+(The "/usr/bin/time" is necessary because just putting "time" calls a 
+seperate shell function that operates differently.) This gave the output
+
+real 0.42
+user 0.39
+sys 0.00
+
+Next I tried the sort with a variety of different thread settings using the
+--parallel=n option. The spec called for testing 1, 2, 4, and 8 threaded
+sorts.
+
+1 thread:
+$ /usr/bin/time -p /usr/local/cs/bin/sort --parallel=1 -g randomFormatted.txt > /dev/null
+
+real 0.43
+user 0.39
+sys 0.00
+
+
+2 threads:
+$ /usr/bin/time -p /usr/local/cs/bin/sort --parallel=2 -g randomFormatted.txt > /dev/null
+
+real 0.40
+user 0.39
+sys 0.00
+
+
+4 threads:
+$ /usr/bin/time -p /usr/local/cs/bin/sort --parallel=4 -g randomFormatted.txt > /dev/null
+
+real 0.39
+user 0.39
+sys 0.00
+
+8 threads:
+$ /usr/bin/time -p /usr/local/cs/bin/sort --parallel=8 -g randomFormatted.txt > /dev/null
+
+real 0.40
+user 0.40
+sys 0.00
+
+Strangely, the speed of sort seemed not to change very much given a 
+different number of threads.

@@ -1,0 +1,79 @@
+﻿Build started 1/30/2013 4:43:50 PM.
+     1>Project "Z:\My Documents\CS174a\template3\anim.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating ".\anim___Win32_Debug\anim.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IGL /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\anim___Win32_Debug/" /Fd".\anim___Win32_Debug/vc100.pdb" /Gd /TP /analyze- /errorReport:prompt anim.cpp
+         anim.cpp
+     1>z:\my documents\cs174a\template3\anim.cpp(106): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(117): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(118): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(224): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(224): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(224): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(229): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(229): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(229): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(230): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(230): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(230): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(314): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(315): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(324): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(329): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(329): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(329): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(350): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(350): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(350): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(353): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(356): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(356): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(358): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(366): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(366): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(366): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(380): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(391): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(392): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(395): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(437): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(437): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(437): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>z:\my documents\cs174a\template3\anim.cpp(438): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(438): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(438): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(440): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(445): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>z:\my documents\cs174a\template3\anim.cpp(566): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(567): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(594): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(595): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(603): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>z:\my documents\cs174a\template3\anim.cpp(605): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+       ManifestResourceCompile:
+         All outputs are up-to-date.
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"anim.exe" /INCREMENTAL /NOLOGO /LIBPATH:GL odbc32.lib odbccp32.lib opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\anim___Win32_Debug\anim.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:".\anim___Win32_Debug/anim.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"Z:\My Documents\CS174a\template3\Debug\anim.lib" /MACHINE:X86 .\anim___Win32_Debug\anim.exe.embed.manifest.res
+         .\anim___Win32_Debug/anim.obj
+         .\anim___Win32_Debug/Ball.obj
+         .\anim___Win32_Debug/BallAux.obj
+         .\anim___Win32_Debug/BallMath.obj
+         .\anim___Win32_Debug/FrameSaver.obj
+         .\anim___Win32_Debug/Timer.obj /MACHINE:I386 
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:".\anim___Win32_Debug\anim.exe.embed.manifest" /manifest .\anim___Win32_Debug\anim.exe.intermediate.manifest
+         All outputs are up-to-date.
+       LinkEmbedManifest:
+         All outputs are up-to-date.
+         anim.vcxproj -> Z:\My Documents\CS174a\template3\anim.exe
+       CopyFilesToOutputDirectory:
+         Copying file from ".\anim___Win32_Debug\anim.pdb" to "Z:\My Documents\CS174a\template3\Debug\anim.pdb".
+       FinalizeBuildStatus:
+         Deleting file ".\anim___Win32_Debug\anim.unsuccessfulbuild".
+         Touching ".\anim___Win32_Debug\anim.lastbuildstate".
+     1>Done Building Project "Z:\My Documents\CS174a\template3\anim.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.64

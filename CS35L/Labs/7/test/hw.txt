@@ -1,0 +1,22 @@
+Zach North
+603 885 768
+HW 7 
+
+1.  If the other team had been observing all bytes going across the network, our network would still
+    be secure. The SSH key system encrypts all data sent and recieved so that only users with our
+    keys could decrypt and access the data. Since our public key was sent through secure file copy,
+    a program based on the same SSH security, at no point would our communications be vulnerable
+    to outsiders. 
+
+    If the other team had also tapped our keyboards, it wouldn't change anything as they still would
+    not have access to our generated key.
+
+    The USB scenario is still the same. SSH keys are generated using entropic elements of the computer
+    system; by their very nature they are completely impossible to be predicted. The key would still
+    be totally random and unable to be guessed.
+
+2.  gpg, when commanded to sign data, signs it with your public key. Since anyone can acquire this public
+    key (it is public, after all) you could concievably sign data with someone elses public key. 
+    gpg --verify only checks the veracity of the public key, nothing more. I suppose signing with
+    a private key would be more secure, but would defeat the purpose of it being private if it is 
+    being given away.

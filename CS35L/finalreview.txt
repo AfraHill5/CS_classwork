@@ -1,0 +1,85 @@
+
+Specific areas to focus on:
+
+-Configure, make, make install, patch, what these do, why do we run it, 
+    be able to use them to patch/compile
+    -not defined concretely but think about the Coreutils example
+        (configure, make, make install, what do they do, why do that
+         have to be run in order)
+
+-Buffered vs Nonbuffered IO, system calls
+    -stdin, stdout, stderr, the differences between them
+
+-Bash commands grep, wc, sort, sed, tr, bash pipelining, redirection
+    -use multiple commands in a short script intelligently to make
+     a task a lot easier
+    -ex: remove repeats from a file
+
+-Bash environment variables
+    -just write these in notes
+    -$VAR (not worried about the predefined ones)
+
+-Basic regex commands
+    -just write these in notes
+
+-GIT, look up changes/commits, how to create patches, how to compare
+    different versions
+    -what are the git commands; given a task how do you accomplish 
+     it in GIT
+    -Reposotories, commits, pushes, pulls, 
+    -find a commit with a certain word in it from the changelog
+
+-C coding, focus on how memory is allocated, manipulated and handled,
+    be able to write a C program or function from scratch, be familiar
+    with the functions in string.h
+    -get man pages for common -option arguments to C commands
+
+-GDB, how to use it, how to write commands to debug a problem
+    -just know basic commands we would use in project
+
+-Qsort, how to use it, how to write a comparison function for it
+    -0 for ==, 1 for <, etc
+    -how to handle void pointers and other things
+    -use a comparison function with Qsort to sort something (how to call)
+
+-Public key / private key encryption
+    -Understand concepts behind it, how it works, how to generate keys, 
+    -how to use the keys to decrypt, encrypt, etc
+    -ex:
+        public key Public_a, public key Public_b
+        private key Private_a, private key Private_b
+
+        If a wants to send a message to b, encrypted, he has to use b's
+        public key to encrypt it (public key is known by everybody)
+        a -> public_b -> b -> private_b
+        only private_b can decrypt this message.
+
+        If a wants to authenticate himself to be A, he uses his own private
+        key to encrypt a message, then sends it to b who decrypts it with
+        the public key
+        a -> private_a -> b -> public_a
+        
+        think about weaknesses of this kind of system
+        why does ssh ask you if you want to add a public key to your system?
+        who says this public key belongs to you? could be anyone's
+        easy to impersonate because you can just get a public key
+
+-Python, be able to write a function from scratch, do IO from files and 
+    command line
+    -Special data types (tuples, dictionaries)
+    -Split
+
+-Bash scripting
+    -write a script from scratch, if/else statements, comparisons, 
+    -how to do loops, read arguments, run bash commands, store results in
+    -variable, which EXIT to call
+
+-Buffer overruns
+    -draw a stack for a given function, when do variables get put on the 
+    -stack, how do they get put on the stack, how does buffer overrun 
+    -effect the stack
+
+-Mutexes, semaphores, threads vs processes, how to write threads in
+    psuedocode (don't necessarily need to know C code)
+
+

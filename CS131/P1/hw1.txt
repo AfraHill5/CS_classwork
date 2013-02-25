@@ -1,0 +1,57 @@
+My code all works, and passes the test cases 100%. Some of my own test cases are included in
+the comments, as well as in the hw1test.ml document.
+
+I found the beginning warmup parts to this problem to be fairly straightforward:
+    - Subset simply checks every member of the first list, starting at the head.
+      If the head exists in the b list, it calls itself recursively with the 
+      tail, and continues until either it finds an a value not in b, or a is
+      reduced to an empty list.
+
+    - proper_subset does the same thing as subset, only instead of keeping the same
+      b it removes the value of a that was found from the b list each recursion.
+      If the two lists become empty at the same "time," it means that a = b and is thus
+      not a proper subset. Otherwise the logic is the same as subset.
+
+    - Equal_sets simply checks if the sets are a subset but not a proper subset, as simple
+      logic dictates that this would make them equal.
+
+    - computed_fixed_point is also fairly simple. It checks if the eq is satisfied on the current
+      value of f and x. If it is not, it calculates f(x), storing it as f_of_x, and calls
+      itself recursively with the new f(x) value. It continues doing this until the values match,
+      and returns the value that it finds. This is not robust -- it can easily create infinite loops
+      -- but the spec indicated that this was not a big deal.
+
+filter_blind_alleys was where the challenge truly began. I went with a "backwards" implementation, the 
+algorithm which is as follows:
+    - first, start with an empty list of rules that we know terminate.
+    - populate this list with all rules that contain only Ts in their terminal list.
+    - Now, go "up" one level. Add to the list all rules with N values that point to a 
+        rule in the "approved" list.
+    - Keep going "up" one level until the list does not grow at all on an iteration. This indicates
+        we have found all the rules that eventually terminate -- the ones that do not will continue
+        "looping" infinitely.
+    - Beautify this rules list (essentially putting it back in the order it began in) by filtering
+        the original grammar with this list, removing any rules that don't terminate, and return
+        this grammar.
+
+I implemented my solution with a variety of helper functions:
+    - isT returns true if a single passed-in term is T, or if it is N but appears on the known 
+        terminals list.
+    - rule_parser is passed a rule, and calls isT on each terminal value. If each one returns true,
+        the rule terminates so rule_parser returns true. Otherwise, it does not terminate (or at
+        least we don't know that it does yet) so it returns false.
+    - populate_term_list calls rule_parser on each rule in the rule list. It gets the size of this
+        new known terminals list and compares it to the previous known terminals list. If the list
+        has grown at all, it calls itself again with the new list to go "up one level." If the list
+        has now grown, we are done with our search and the function returns the populated
+        known terminals list.
+    - mem_filter is a simple helper function to switch the order of List.filter's arguments
+    - finally, filter_blind_alleys pulls out the rule list and passes it, along with an empty list,
+        to the populate_term_list function, which returns the known terminals from the rule list.
+        It puts these rules in order and returns them (along with the unchanged start value)
+
+I imagine the performance of this algorithm to not be particularly impressive, but it is the best
+I was able to come up with. I was unable to use previous functions like computed_fixed_point or
+subset, but to be honest I didn't think too hard about that sort of solution as I preferred
+just getting something to work rather than to get clever.
+  

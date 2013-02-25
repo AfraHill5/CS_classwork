@@ -1,0 +1,7 @@
+The future will be better tomorrow.
+1 2 4 8 16 32
+5 4294966348
+6 6
+mfcdhg
+5 6 2 4 3 1
+

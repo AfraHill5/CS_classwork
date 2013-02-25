@@ -1,0 +1,158 @@
+Zach North
+603 885 768
+Lab 6 Log
+
+Step 1 of the lab was to create a C program catb.c which uses getchar and 
+putchar to copy bytes from stdin to stdout. This code seemed pretty simple
+to write as it only required a couple lines; just getchar() until the 
+end of the file was reached, and putchar() each character gotten. One
+caveat that was necessary was storing the gotten char in an int, not
+a char as is logical -- this is to make sure the code correctly stops
+reading at the end of the file. Some systems store char variables as
+-128 to 127, and some store them as 0 to 255. Since EOF is defined as -1
+it is better to just store the value as an int to guarantee no errors
+will possibly occur.
+
+catu.c has to do the same thing except uses read() and write() to read and
+write bytes. Again, this code is basically exactly the same as the above,
+except in addition I had to pass a couple arguments to read and write
+to specify where the bytes were going and how many to read/write at a time.
+They had quite particular file types that needed to be passed in, so I 
+had to do a couple odd things like declare my character as an array, and
+use fileno() on stdin and stdout rather than just pass them into the 
+functions. This was so they could keep track of which byte they had
+currently processed already.
+
+I decided to use strace -c as my comparison call, as it creates a nice
+little table for me to compare my two functions. First order of business
+was to get a large file to compare; since I was on the linux server
+I ran the command 
+find / -size +5000k
+to get a list of files bigger than 5MB. I picked one at random and copied
+it to my lab folder for testing. The one I picked was
+/usr/local_cs/cs33/toremove/C/common/lib/linux/libcudpp_x86_64D.a
+and it was a 19MB file. I renamed it "testFile."
+
+The commands I gave to test it were
+strace -c ./catb < testFile > testDest.txt
+strace -c ./catu < testFile > testDest.txt
+to test the speed at which the file copied one file to another, char
+by char.
+
+The output I recieved was:
+
+CATB:
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+78.20   0.000581             2       302           write
+21.80   0.000162             1       304           read
+0.00    0.000000             0         2           open
+0.00    0.000000             0         2           close
+0.00    0.000000             0         4           fstat
+0.00    0.000000             0         9           mmap
+0.00    0.000000             0         3           mprotect
+0.00    0.000000             0         1           munmap
+0.00    0.000000             0         1           brk
+0.00    0.000000             0         1         1 access
+0.00    0.000000             0         1           execve
+0.00    0.000000             0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00  0.000743                   631         1 total
+
+CATU
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+59.27    0.203581           0  10637447           write
+40.73    0.139896           0  10637448           read
+ 0.00    0.000000           0         2           open
+ 0.00    0.000000           0         2           close
+ 0.00    0.000000           0         2           fstat
+ 0.00    0.000000           0         7           mmap
+ 0.00    0.000000           0         3           mprotect
+ 0.00    0.000000           0         1           munmap
+ 0.00    0.000000           0         1           brk
+ 0.00    0.000000           0         1         1 access
+ 0.00    0.000000           0         1           execve
+ 0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.343477              21274916         1 total
+
+I didn't even wait for catu to finish; I had to ctrl-c out of it because
+it had hung the server for a good 5 minutes and still had only finished
+1/6 of its work, as visible from the strace information.
+
+Next I tried the same test except displaying info from the file to the
+terminal rather than another file. This required the commands
+strace -c ./catb < testFile
+strace -c ./catu < testFile
+
+After a really long string of characters, the strace tables I got are as 
+follows:
+
+CATB
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+98.62    0.006567           0     51995           write
+ 1.38    0.000092           1       174           read
+ 0.00    0.000000           0         2           open
+ 0.00    0.000000           0         2           close
+ 0.00    0.000000           0         4           fstat
+ 0.00    0.000000           0         9           mmap
+ 0.00    0.000000           0         3           mprotect
+ 0.00    0.000000           0         1           munmap
+ 0.00    0.000000           0         1           brk
+ 0.00    0.000000           0         1         1 access
+ 0.00    0.000000           0         1           execve
+ 0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00   0.006659                 52194         1 total
+
+CATU
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+73.40    0.674747           0  15786799           write
+26.60    0.244569           0  15786801           read
+ 0.00    0.000000           0         2           open
+ 0.00    0.000000           0         2           close
+ 0.00    0.000000           0         2           fstat
+ 0.00    0.000000           0         7           mmap
+ 0.00    0.000000           0         3           mprotect
+ 0.00    0.000000           0         1           munmap
+ 0.00    0.000000           0         1           brk
+ 0.00    0.000000           0         1         1 access
+ 0.00    0.000000           0         1           execve
+ 0.00    0.000000           0                     arch_prctl
+------ ----------- ----------- --------- -------- ----------------
+100.00    0.919316             31573621         1 total
+
+I had to interrupt both programs because they were taking a long time
+and lagging my terminal severely. However it was made obvious what
+was going on.
+
+CATB was using a buffered read/write call, and CATU was not. While the
+speed difference was not very apparent in the file -> terminal test, 
+it definitely made a huge difference in the file -> file test, which
+makes me think it was my terminal's display speed which was to blame
+rather than the code itself. Furthermore, by taking a look at the
+strace information, we can see that the buffered IO uses massively
+less system calls to "write" and "read" than the unbuffered, making
+it orders of magnitude more efficient for large files like my 20MB 
+input.
+
+Finally, to confirm my suspicions I utilized the time command to get
+an actual time for each of my calls. Since the file -> terminal test
+was taking a huge amount of time I decided to test the file -> file 
+speed of the two programs, using the calls
+time ./catb < testFile > testDest.txt
+time ./catu < testFile > testDest.txt
+
+CATB:
+0.602u 0.021s 0:00.93 66.6% 0+0k 0+0io 0pf+0w
+CATU:
+6.472u 31.349s 0:38.14 99.1%    0+0k 0+0io 0pf+0w
+
+CATB was clearly faster, finishing nearly instantaneously, while
+CATU hung the command line for a good half a minute.
+
+
+

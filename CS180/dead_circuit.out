@@ -1,0 +1,43 @@
+6 vertices;
+1: 2 ;
+2: 3 6 ;
+3: 5 ;
+4: 2 ;
+5: 1 4 ;
+6: 5 ;
+
+non-tree edge:  v[  5 ] -> v[  1 ]
+non-tree edge:  v[  4 ] -> v[  2 ]
+DFS tree edge:  v[  5 ] -> v[  4 ]
+DFS tree edge:  v[  3 ] -> v[  5 ]
+DFS tree edge:  v[  2 ] -> v[  3 ]
+non-tree edge:  v[  6 ] -> v[  5 ]
+DFS tree edge:  v[  2 ] -> v[  6 ]
+DFS tree edge:  v[  1 ] -> v[  2 ]
+DFS: v[1] (visit number 1)
+DFS: v[2] (visit number 2)
+DFS: v[3] (visit number 3)
+DFS: v[4] (visit number 5)
+DFS: v[5] (visit number 4)
+DFS: v[6] (visit number 6)
+
+DFS: v[1] (visit number 1)
+DFS: v[2] (visit number 2)
+DFS: v[3] (visit number 6)
+DFS: v[4] (visit number 5)
+DFS: v[5] (visit number 4)
+DFS: v[6] (visit number 3)
+6 vertices;
+1: 2 ;
+2: 3 6 ;
+3: 5 ;
+4: 2 ;
+5: 1 4 ;
+6: 5 ;
+
+BFS: v[1] (visit number 1)
+BFS: v[2] (visit number 2)
+BFS: v[3] (visit number 3)
+BFS: v[4] (visit number 6)
+BFS: v[5] (visit number 5)
+BFS: v[6] (visit number 4)

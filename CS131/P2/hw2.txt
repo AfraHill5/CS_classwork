@@ -1,0 +1,86 @@
+I will be the first to say I had a lot of trouble with this assignment.
+While part A came fairly simply, the second part completely stumped me
+and I still did not solve it all the way. After nearly forty hours 
+in the computer lab I am giving up and turning in what I have, even
+I know it is not correct. 
+
+My algorithm for part A (convert_grammar) is as follows:
+
+- convert_grammar is called with an old grammar, gram1. First it matches
+  this grammar with a start symbol and a rule_list, and calls get_all_a
+  (a being the left side values) on the rule_list. It constructs the 
+  new rule grammar by mapping all the b values on to the a list, and 
+  and combines the original list with the new_rule_grammar by calling
+  a simple list function, returning a this as a function (along with
+  the start value)
+
+- get_all_a takes in a rule list and list of known left side values.
+  it takes the head of the list, and checks its a value (assuming
+  (a,b) ) If it is in the known a value list, it goes to the tail;
+  if it is not, it adds it to the list and goes to the tail.
+  When the rule list is empty, it returns the a list.
+
+- get_all_b takes in a rule_list and a known left-side list. It matches
+  each rule with its left side value and appends it to the returned
+  value, eventually reaching an empty list and returning up the chain
+  to return the new rule grammar.
+
+The second part is not complete, and there are two main problems with it:
+    - I could not figure out the internal acceptor logic.
+    - The derived value returned is reversed from what it should be.
+
+Two glaring issues, clearly, but I would like to highlight that my code
+returns the correct Some/None value for any grammars not requiring
+internal acceptor logic, works correctly with the external acceptor, 
+and gives the correct derivation (just out of order.) So it does
+have some limited functionality.
+
+The algorithm I used is as follows:
+    - parse_prefix takes in a grammar, an acceptor, and a fragment. 
+      It matches the grammar with the start and rule_list and calls 
+      build_matcher using the starter, rule_list and an empty deriv.
+      If this returns None, it returns None; if it returns Some, it
+      applies the external acceptor and returns the result.
+
+    - build_matcher takes in a rule_list function, a current symbol, 
+      a fragment, and a derivative. It calls the rule list function
+      using the current symbol and returns an OR matcher on the returned
+      values, using the logic that one of these needs to return Some 
+      to return Some (only None on all of them returns None.)
+
+    - or_matcher takes in a rule_list and a list of rules. It grabs the 
+      head of this ruleset and calls an AND matcher on it -- all of the
+      values inside the rightside rule must return some for it to return 
+      Some. If it passes, it appends the current rule to the returned
+      rule derivative, and returns some with the fragment returned.
+
+    - and_matcher similarly takes a rule list and list of items in a 
+      single rule. It grabs the head of the items and tries rule_matcher
+      with it, as well as the tail (for the acceptor to check).
+      If it passes it continues with the tail, and the tail
+      of the fragment as well as the returned derivative (keeps track 
+      of "where it has been."
+
+    - finally, rule_matcher takes in an item head and tail, returning 
+      None if there is no match or if the rule list is too big to match
+      the fragment. It matches the head rule with a T or N. If it is a 
+      T, it tries to string compare it with the head of the fragment. 
+      If there is a match, this is where it should call the internal 
+      acceptor with the remaining rules. 
+      I left the old call in as a comment, but could not get
+      it to work so I simply returned Some (not leaving room for
+      backtracking.) If there is no match it returns None. If the head 
+      rule is N, the whole process "starts over" with a call to 
+      build_matcher with the matched N rule as the current.
+
+My test cases highlight where my code works and does not work. For simple
+grammars such as test 2, the code works -- it returns a correct Some()
+with the derivative in the correct order. But for code that is slightly
+more complicated, such as test_1, the code screws up. It returns Some, 
+which is correct, but the derivative is out of order.
+
+For any more complicated code requiring backtracking, my code will return 
+None when it should return Some. This is a clear error but I am late enough
+as is and simply cannot figure it out.
+
+

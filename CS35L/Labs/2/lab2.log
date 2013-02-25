@@ -1,0 +1,122 @@
+Zach North
+603885768
+Lab 2 Log
+
+Sorted the words file into my directory using the command
+sort -d /usr/share/dict/words > words.txt
+(I'm working directly on the seasnet machines)
+
+tr -c 'A-Za-z' '[\n*]'
+This will replace every non-alphabetic character with a newline
+character.
+
+tr -cs 'A-Za-z' '[\n*]'
+This performs the same action as above, but since the squeeze flag
+is indicated it will not display the same character on two successive
+lines. So, instead of having lots of spaces between words they will
+be placed on successive lines.
+
+tr -cs 'A-Za-z' '[\n*]' | sort
+Performs the same as above except it sorts the words in alphabetical
+order.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u
+Performs the same as above, except removes all duplicates so each 
+entry is unique.
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm - words
+This outputs all the words common to the sorted list of words and the words.txt dictionary file (a lot of words)
+
+tr -cs 'A-Za-z' '[\n*]' | sort -u | comm -23 words
+This removes all words that either unique to the words.txt file (they 
+appear in the dictionary, but not in the document) and words that 
+appear in both files (they are correctly spelled.) Thus it should leave
+only words that do not appear in the dictionary.
+
+One problem with this implementation is that it lists words with 
+uppercase in them to be misspelled. It needs a flag to ignore case, 
+which I assume we will add later.
+
+The hawaiian letters are
+pkmnwlhaeiou'
+along with uppercase. The ' represents the hawaiian okina.
+
+To parse the web page and look for hawaiian letters, 
+need to pass in the input file using the command line and 
+look for the pattern:
+<tr><td>EWORD</td> <td>HWORD</td>
+where EWORD is the english word and HWORD is the hawaiian word.
+Then, use sort on the gotten hawaiian words and store them in a
+seperate file which becomes the "hawaiian dictionary."
+Finally, convert all the words to lower case, convert ` to ' and
+remove all words that contain letters other than the given ones
+as a form of error checking. The script should also check for 
+duplicates and remove them.
+
+The script I came up with is this:
+
+#!/bin/bash
+sed 's/\r//g' | 
+# this deletes all \r characters; they are unneeded and just clutter up the html.
+
+tr -d '[:blank:]' |
+# removes all spaces to make parsing easier
+
+sed 's/<u>//g' |
+sed 's/<\/u>//g' | 
+sed 's/<b>//g' |
+sed 's/<\b>//g' |
+# gets rid of all the formatting 
+
+sed '/<tr>/,/<\/td>/d' |
+# this line deletes all the english words, which are always between <tr> and </td>
+
+sed 's/<tr>//g' |
+sed 's/<\/tr>//g' | 
+# removes the formatting around the hawaiian words
+
+grep '^<td>.*<\/td>$' |
+# grabs each word, each of which is between <td> and </td> tags
+
+sed 's/<td>//g' |
+sed 's/<\/td>//g' |
+# removes the tags
+
+sed '/^$/d' |
+# deletes the empty lines
+
+sed s/\`/\'/g |
+# changes all ` to '
+
+sed 's/,/\n/g' | 
+# removes all commas and replaces them with newlines
+
+tr '[:upper:]' '[:lower:]' |
+# this converts everything to lowercase
+
+grep '[pkmnwlhaeiou]' |
+# this is a sort of error check, it gets rid of all words that have non-hawaiian letters.
+
+sort |
+uniq -u
+# finally, sorts the list and removes any duplicates.
+
+I ran this script and pipelined the results into a file hwords that contains a "dictionary" of
+hawaiian words.
+
+Now if we run the command
+tr -cs 'pkmnwlhaeiouPKMNWLHAEIOU\'' '[\n*]' | sort -u | comm -23 hwords
+it will display a list of all "misspelled" hawaiian words.
+
+Since it was still flagging words with uppercase in them as being misspelled, I really quickly ran
+tr '[:upper:]' '[:lower:]' < assign2.html > assign2.html.lower
+to convert all the words to lowercase before running the spell checker. It's probably not the most elegant
+solution but it's what I came up with.
+
+When checking the webpage using the hawaiian dictionary, I ended up with 396 misspelled words, compared to
+37 with the English dictionary. If I excluded words that used letters other than the hawaiian letters, the 
+amount of misspelled words dropped to 197.
+
+Words that were misspelled in both dictionaries are obvious -- stuff like www and random letters like u that
+appeared within html tags. A lot of english words turned up as misspelled words in the hawaiian run -- stuff
+like "export" and "homework." The english dictionary marked "halau" as misspelled.

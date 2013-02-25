@@ -1,0 +1,55 @@
+1.1v
+/ A S C I I Enter
+/ I n s t r u c t i o n s Enter 
+/ H T M L Enter N 
+/ h u n t Enter 
+End 
+Home H 
+: q Enter
+
+1.2v
+1 6 G d d 
+/ < ! - - Enter d d 
+n d 3 d n Delete Delete Delete
+Delete Delete Delete Delete : w q Enter
+
+1.3v
+/ A s s i g n m e n t 1 Enter w Delete i 3 5 Esc n w Delete 
+i 3 5
+Esc / U T F - 8 Enter Delete Delete Delete Delete Delete 
+i U S - A S C I I Escape / < o l > Enter n i End Enter Esc : w q Enter
+
+1.4v
+G k k k k v End d / < p > s h o u l d Space o u t Enter N p Del j d d
+/ - - - Enter V G Del u i < ! - - SP G End a - - > Esc / % s / < o l > / 
+< O L > (5 instances)
+
+
+1.1e
+C-S A S C I I Esc Esc Esc 
+C-S I n s t r u c Esc Esc Esc
+C-S Enter H T M L Enter
+C-S Enter h u n t Enter
+C-e
+C-a
+M-<
+
+1.2e
+C-S < ! - - C-k Backspc Backspc Backspc Backspc
+C-S < ! - - C-k Backspc Backspc Backspc Backspc
+etc etc
+
+1.3e
+M-% A s s i g n m e n t 1 Enter A s s i g n m e n t 3 5 y y
+M-% U T F - 8 Enter U S - A S C I I Enter y
+M-< C-s < o l > Enter C-e Enter
+C-x C-s C-x C-c
+
+1.4e
+M->
+Lots of moving around...
+Copy is C-k to kill the line, C-y to yank into buffer
+C-/ to undo, M-% to search and replace.
+
+
+

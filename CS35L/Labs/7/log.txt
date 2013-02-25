@@ -1,0 +1,42 @@
+Zach North
+603 885 768
+Lab 7 Report
+
+Since I was performing this lab on my own Ubuntu laptop and not the 
+UCLA linux server, the first thing I had to do was download and install
+sshd, as Ubuntu only comes with the client version by default. I did this
+via
+
+sudo apt-get install openssh-server
+
+Next I added a new 'guest' user. I found using the GUI to be a bit
+cumbersome so I used the command line instead:
+
+sudo useradd -d /home/GUEST -m 'GUEST'
+sudo passwd GUEST
+
+Next, we have to generate a key on another computer so the other user can
+log into this machine:
+
+ssh-keygen -t dsa
+
+Then, we add the generated key to this machine by copying it over:
+
+scp ~/.ssh/id_dsa.pub GUEST@LOCAL_IP/.ssh/authorized_keys
+ssh copy-id GUEST@LOCAL_IP
+
+We add it to our keys using the command
+ssh-add
+
+Now we have the public key from the other computer so it has the ability
+to log in. To connect, it simply has to run the command
+
+ssh -X GUEST@LOCAL_IP
+(the -X is to enable X11 forwarding)
+
+Because we typed -X in our login, the logged in computer should be able to
+enter the command
+
+xterm
+
+and get a shell window.

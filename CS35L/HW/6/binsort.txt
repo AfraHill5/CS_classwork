@@ -1,0 +1,44 @@
+The input file I used was 131256 lines, about 23 million characters;
+I described the file in detail in my previous lab writeup.
+
+Results for binsortu:
+
+Block Size      Time Return
+1               15.839u 0.016s 0:15.87 99.8% 0+0k 0+0io 0pf+0w
+5               3.705u 0.016s 0:03.77 98.4% 0+0k 0+0io 0pf+0w
+10              2.213u 0.021s 0:02.33 95.7% 0+0k 0+0io 0pf+0w
+25              1.358u 0.024s 0:01.60 85.6% 0+0k 0+0io 0pf+0w
+100             0.914u 0.039s 0:01.23 76.4% 0+0k 0+0io 0pf+0w
+
+
+Binsortuu:
+
+Block Size    # Comps       Time Return
+1             19744108      16.345u 0.021s 0:16.38 99.8% 0+0k 0+0io 0pf+0w
+5              3948822      3.346u 0.260s 0:03.65 98.6% 0+0k 0+0io 0pf+0w
+10             1974411      1.886u 0.325s 0:02.31 95.2% 0+0k 0+0io 0pf+0w
+25              789765      0.956u 0.314s 0:01.51 83.4% 0+0k 0+0io 0pf+0w
+100             197442      0.450u 0.105s 0:00.86 63.9% 0+0k 0+0io 0pf+0w
+
+For a 1-byte block size, my new program is actually less efficient 
+than the old one. However for larger block sizes it gains speed and
+once the block size reaches 100 it is more than twice as fast as 
+the old method.
+
+As for varying numbers of input lines, I tested each program with block
+size 1 for the following line numbers:
+
+Binsortu:
+Lines           Time Return
+50000           0.148u 0.000s 0:00.15 93.3% 0+0k 0+0io 0pf+0w
+500000          1.577u 0.000s 0:01.58 99.3% 0+0k 0+0io 0pf+0w
+5000000         18.191u 0.026s 0:18.22 99.9%    0+0k 0+0io 0pf+0w
+
+Binsortuu:
+Lines         # Comps       Time Return
+50000         250000        0.133u 0.001s 0:00.13 100.0%    0+0k 0+0io 0pf+0w        
+500000        2500000       1.496u 0.003s 0:01.50 99.3%  0+0k 0+0io 0pf+0w
+5000000       25000000      18.742u 0.024s 0:18.77 99.9%    0+0k 0+0io 0pf+0w
+
+From my measurements it seems the time necessary for each program is
+roughly equal; they run at about 300000 lines per second.

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="cs174">
+</Property><Property Name="Solution File" Value="Z:\My Documents\CS174a\template3\cs174.sln">
+</Property><Property Name="Date" Value="Tuesday, January 29, 2013">
+</Property><Property Name="Time" Value="12:32 PM">
+</Property></Properties><Event ErrorLevel="0" Project="anim" Source="anim.vcproj" Description="Converting project file 'Z:\My Documents\CS174a\template3\anim.vcproj'.">
+</Event><Event ErrorLevel="1" Project="anim" Source="anim.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="anim" Source="anim.vcproj" Description="MSB8012: $(TargetPath) ('Z:\My Documents\CS174a\template3\.\Release\anim.exe') does not match the Linker's OutputFile property value 'anim.exe' ('Z:\My Documents\CS174a\template3\anim.exe') in project configuration 'Release|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="1" Project="anim" Source="anim.vcproj" Description="MSB8012: $(TargetPath) ('Z:\My Documents\CS174a\template3\.\anim___Win32_Debug\anim.exe') does not match the Linker's OutputFile property value 'anim.exe' ('Z:\My Documents\CS174a\template3\anim.exe') in project configuration 'Debug|Win32'. This may cause your project to build incorrectly. To correct this, please make sure that $(TargetPath) property value matches the value specified in %(Link.OutputFile).">
+</Event><Event ErrorLevel="0" Project="anim" Source="anim.vcproj" Description="Done converting to new project file 'Z:\My Documents\CS174a\template3\anim.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="anim" Source="anim.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="cs174.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="cs174.sln" Description="Converted">
+</Event></UpgradeLog>
