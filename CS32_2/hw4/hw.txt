@@ -1,0 +1,27 @@
+Homework 4
+
+Zach North
+603885768
+
+2. A compliation error occurs because there is no way to compare 2 Points, which
+   is required to perform many of the operations in the Map template class.
+   The function will compile if you declare an operator!= in the Point class,
+   so the template has a way to implement comparisons between 2 Points.
+
+3b.It would be impossible to implement using the listAll function recursively
+   because there is no way to pass the current path "down" the recursion
+   as a string The current iteration would have no way of knowing the 
+   labels of its parents in the tree.
+
+4a.This is an O(N^3) algorithm. It executes 3 loops, each iterating from 0 to 
+   N, nested within each other.  
+ 
+ b.This is still an O(N^3) algorithm. It still runs 3 nested loops, each dependent
+   directly on the size of N. Although this loop runs faster than the loop from
+   part A, it still increases in time complexity on an N^3 scale.
+
+5. The get() function is O(1) if called with an index number, and O(N) if called
+   without one (since it needs to iterate through to search for the value.)
+   So, the combine() function should be O(N^2) since it contains one loop iterating
+   from 0 to N, which calls get() without an index once within it.
+

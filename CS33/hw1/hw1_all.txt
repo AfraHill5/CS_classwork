@@ -1,0 +1,241 @@
+/*2_58*/
+int is_little_endian()
+{
+	int x = -2; 
+	/* all the bits will be 1 except for the last one, which will be 0 */
+
+	unsigned char* startByte = &x;
+	/* point to the first byte of the x int */
+	if (*(startByte+1)  == '0')
+		return 1;
+	/* if the computer is little endian the bits will be ordered in 
+	   reverse i.e. 10111111... */	
+
+	return 0;
+}	  
+
+/*2_59*/
+/* Write a c expression that will yield a word consisting of the least
+   significant byte of x and the remaining bytes of y. For operands  	
+   x = 0x89ABCDEF and y=0x76543210, this would give 0x765432EF. */
+
+#include <stdio.h>
+unsigned int foo(int x, int y)
+{
+	unsigned int xNew = (unsigned) (x % 256); /* 256 = 2 ^ 8 bits */
+	unsigned int yNew = (unsigned) (y - (y % (256))); 
+	return (xNew + yNew);
+}
+
+/*2_62*/
+/*write a function int shifts_are_arithmatic that yields 1 when run on a machine
+that uses arithmatic right shifts for ints and 0 otherwise. */
+
+
+#include <stdio.h>
+
+int int_shifts_are_arithmatic()
+{
+	int test = -1; /*-1 = 1..1 on all machines running 2s complement */
+	test = test >> 1; /*shifts to the right 1 bit */
+	unsigned char* testPtr = &test;
+	/* this ptr should point to a 0 if the shift was not arithmatic as it pts
+	   to the first bit in the integer. if it was arithmatic, it 
+	   will pt to a 1 because it was the leading bit */
+
+	if (*(testPtr) == '0')
+		return 0;
+	else
+		return 1;
+}
+
+/*2_64*/
+/*Return 1 when any odd bit of x = 1; 0 otherwise. Assume w=32. */
+int any_odd_one(unsigned x)
+{
+	unsigned int a = 0x55555555; /*0101010...01*/
+	/*assuming odd is counted least significant to most significant.
+	if counting most to least, use 0xAAAAAAAA*/
+
+	return !((a & x) == 0);
+	/*only positive if there is a 1 in an odd position*/
+
+}
+
+/*2_72*/
+/* original, buggy code: */
+
+void copy_int(int val, void *buf, int maxbytes)
+{
+	if (maxbytes-sizeof(val) >= 0)
+		memcpy(buf, (void*) &val, sizeof(val));
+}
+
+
+
+/*
+	This code doesn't work because sizeof() returns an unsigned integer. 
+	Maxbytes is implicitly cast to be unsigned, and subtracting an unsigned
+	number from another can never give a value less than 0. The if statement
+	will therefore always be triggered.
+*/
+
+/* If you use signed subtraction, the if statement will work because it 
+	will be able to represent negative numbers. 	*/
+
+
+void copy_int_fixed(int val, void *buf, int maxbytes)
+{
+	if((signed) maxbytes - sizeof(val) >= 0) 
+		memcpy(buf, (void*) &val, sizeof(val));
+}
+
+
+/*2_73*/
+#include <limits.h>
+#include <stdio.h>
+
+
+int saturating_add(int x, int y)
+
+/*
+	Instead of overflowing the way normal 2s-complement addition does, 
+	saturating addition returns TMax when there would be positive overflow
+	and TMin when there would be negative overflow. Saturating arithmatic
+	is commonly used in programs that perform digital signal processing.
+*/
+
+{
+	int result = x + y; 
+	
+	int signChecker = INT_MIN; /*1000...; used to check for +/- */
+	int isPositiveOverflow =(  ~(x      & signChecker)  /*x >= 0 */
+				 & ~(y      & signChecker)  /*y >= 0 */
+			         &  (result & signChecker));/*result < 0 */
+		 /*keeps track of whether + overflow or not */
+
+	int isNegativeOverflow = (  (x      & signChecker) /*x < 0*/
+				 &  (y	    & signChecker) /*y < 0*/
+				 & ~(result & signChecker)); /*result >= 0 */
+		/*keeps track of whether - overflow or not */
+
+
+	int shiftAmt = ((sizeof(int)) << 3) - 1;
+
+	isPositiveOverflow = (isPositiveOverflow >> shiftAmt);
+	isNegativeOverflow = (isNegativeOverflow >> shiftAmt);
+
+	/*here we exploit the guaranteed arithmatic shift to turn the two
+	overflow integers into either 000..0 or 111..1. By doing this we can
+	& them with our numbers to determine whether or not an overflow occured
+	*/
+
+	/* isPositiveOverflow is  11..1 if x and y are positive numbers, but 
+	   the result is negative; otherwise it is 00..0. isNegativeOverflow
+	  is 1 if x and y are negative numbers but the result is positive. */
+
+	return ((INT_MAX & isPositiveOverflow) + (INT_MIN & isNegativeOverflow)
+		+ ( ((~isPositiveOverflow) & (~isNegativeOverflow)) & result ) );
+
+	/*we return 
+		- INT_MAX if it overflowed positively
+		- INT_MIN if it overflowed negatively
+		- the result if it did not overflow at all  
+	*/
+}
+
+/*2_75*/
+unsigned int unsigned_high_prod(unsigned x, unsigned y)
+{
+	unsigned getHighVals = 0xffff0000;
+
+	/*use this value to & with x and y to split the "high"
+	bits so they can be calculated seperately */
+
+	unsigned highX = (x & getHighVals);
+	unsigned highY = (y & getHighVals);
+
+	/*since the bitwise functions are identical for signed and unsigned
+	multiplication, we can just call the signed_high_prod function with 
+	unsigned integers via casting, and then change the answer back to
+	unsigned interpretation. */
+
+	int answer = signed_high_product(((int)highX), ((int)highY));
+	return ( (unsigned) answer);
+}
+
+/*2_81*/
+/*sample code*/
+
+int main()
+{
+	int x = random();
+	int y = random();
+	unsigned ux = (unsigned) x;
+	unsigned uy = (unsigned) y;
+
+
+	/*problems*/
+	/*a*/
+	(x<y) == (-x>-y);
+
+	/*This is not always true, because -T_MIN == T_MIN. Thus if x == T_MIN
+	and y == 5, the expression would return 0 because it gives
+	(T_MIN < 5) == (T_MIN > -5)
+	and T_MIN cannot be greater than any signed integer. */
+
+	/*b*/
+	((x+y)<<4) + y-x == 17*y+15*x;
+
+	/*this can be simplified to: */
+	((x+y)<<4) == 16*x+16*y;
+	/*This is a true statement, because performing a left shift is
+	equivalent to multiplying by 2; 4 left shifts multiplies by 16. */	
+
+	/*c*/
+	~x+~y+1 == ~(x+y);
+	
+	/*This doesnt work because the boolean NOT expression does not
+	commute over parenthesis. For example if x = 1 and y = F,
+	~1 + ~F + 1 == E + 0 + 1 == 0F.
+
+	~(1+F) == ~00011111 == 111000000 == E0.
+
+	*/
+
+	/*d*/
+	(ux-uy) == -(unsigned)(y-x);
+	/*This doesn't work because y-x could be a negative number, which
+	would screw up the binary when converting to unsigned.
+
+	consider
+	x = -4
+	y = -8
+
+	so,
+	ux == 0100
+	uy == 1000
+	x  == 1100
+	y  == 1000
+
+
+	y-x == -4 == 1100
+	1100 cast to unsigned becomes 12.
+	thus the right side would be -12.
+
+	meanwhile the left side would be ux-uy, or -4+8 == 4.
+	*/ 
+
+	/*e*/
+	((x >> 2) << 2) <= x;
+
+	/*This is true because we are essentially dropping the last 2 bits of 
+	x and replacing them with 0s. These are the +1 and +2 places for x, 
+	so changing both to 0 will reduce the fuction by between 0 and 3, 
+	depending on whehter they were 00, 01, 10, or 11. The only way the final
+	result could be lower than the original is if we could somehow drop
+	the leading negative bit, but this is impossible because we have a 32
+	bit word size and we only shift 2 bits.  */
+
+
+}

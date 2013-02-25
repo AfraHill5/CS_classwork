@@ -1,0 +1,288 @@
+Zach North
+603 885 768
+Project 4: AdHunter
+
+1. Algorithm and Data Structures
+
+AdHunterImpl:
+
+For the AdHunter class I decided to use a vector to store the seed sites, due 
+to the fact that the number of seeds is dynamic and resizable, and vectors
+are easy to work with and use. The class also stores a Matcher within it to 
+process links for their relevant data.
+
+The constructor for this class simply passes the inputted ruleStream to the 
+Matcher's constructor, while leaving the seeds empty. The user must add a 
+seed manually using the addSeedSite function, which pushes it into the 
+seed site vector. The interesting function, getBestAdTargets, is rather simple
+when viewed from the AdHunter class because it simply calls high level functions
+from all the other classes. It clears the matches vector, and then for each 
+seed site in the vector creates a Crawler object initialized with that site. 
+Then it call's the member Matcher's process function on each site document
+created by the Crawler until it either hits the user's inputted limit of 
+pages per site, or it runs out of links.
+
+From a high level perspective, the AdHunter simply class pulls every link from the
+inputted seed sites and checks each page for matches with the ad rules, outputting
+the results into a vector.
+
+MatcherImpl:
+
+The matcher class uses a vector in its private data as well, to hold the Rules
+gotten from the inputted file. It also has two private functions; one returns a
+vector of Rule pointers that are relevant to the inputted Document, and the other
+simply checks whether a given rule is a match for a given Document. 
+
+The constructor for this class takes a filestream as an argument, which is the
+file containing the list of rules for the current file. It gets each of these rules 
+from the file and stores them in the allocated private vector.
+
+The process function in this class first finds the subset of rules that apply to
+the given document by calling the private findRuleSubset function. This function
+simply steps through every rule and checks if the doc contains one of the elements
+from the rule; if it does, the given rule is pushed into the rule subset vector.
+After the loop runs through every rule, it returns the subset vector back to 
+the process function. Then, for every rule in the subset vector, the function
+actually checks whether the rules match and whether the price of the ad is greater
+than the inputted minimum price. All of the rules that pass these tests are pushed
+onto the Matches vector reference, and then sorted by price at the end of the function.
+
+In short, the process function finds all the rules that apply to the inputted
+document and are above the price threshold, sorts them, and stores them in a vector.
+
+MyHashMap:
+
+The hash map was the trickiest part of the assignment, in part because it was 
+basically required to contain a linked list as well for performance issues. My
+implementation used a lot of private variables: 2 ints, to store the number of 
+buckets in the hash table and one to track the number of buckets actually used, 
+as well as a variety of pointers: one pointing to the actual, dynamically allocated
+hash table, on pointing to the head of the linked list, and one pointing to the
+current iteration of the linked list (used in the getNext function.)
+
+I also defined 2 structs used within my class: the Record struct, containing a key,
+value, and a pointer to the next Record (used in the open hash map.) Since the 
+hash map is defined as open, the array was really an array of pointers to records,
+so in the case of collisions a small linked list would be generated to store
+all the possible Records for a key value. Thus, the next pointer (usually set 
+to NULL.)
+
+The other struct is the RecordListItem struct, really a wrapper for a pointer to 
+a Struct. It simply contains a Record pointer and a RecordListItem pointer. I used
+this in the linked list to avoid using pointer-to-pointers.
+
+The constructor for my hash map dynamically created a new array of Record pointers
+the size of the inputted number of buckets. It sets the other private values logically.
+Similarly logically, the destructor for this class simply deletes everything allocated
+earlier.
+
+The associate function first generates a key value based on the inputted key. I chose
+to do this by multiplying each character's place in the key string (plus 3) times the 
+ASCII value of the (lowercase) character, and then adding them all together for each word and
+taking the modulus with respect to the bucket size. I did this mainly to try
+to avoid collisions from words like "bat" and "tab" that have the same letters
+by also making the relative position of the letters important to the key value as well.
+Then the function checks to see if the key is already present in the hash table; 
+if it is, it simply updates the value and returns. If it isn't, a new Record
+is dynamically created and added to the table, with the corresponding linked list
+being updated as well to keep track of it.
+
+The find function takes the inputted key and finds its key value using the exact
+same key function as stated above, then checking the bucket for the key. If it is
+present it returns a pointer to its value, otherwise returning NULL. In the case of
+collisions, it checks each Record in the bucket before returning.
+
+Because of the corresponding linked list, the getFirst and getNext functions were a snap
+to implement. GetFirst returns the address of the value pointed by the head of the
+linked list and sets the iterator pointer to the head, while the getNext function
+steps through the list and returns each value in the list in succession.
+
+numItems simply returns the table size used, which is incremented each time a 
+new Record is added in the associate function.
+
+2. Test Cases
+
+MyHashMap:
+int main()
+{
+	MyHashMap<int> m;
+	m.associate("John", 3); //testing associate
+	m.associate("Robert", 4); //same
+	m.associate("John", 5); //testing associate overwrite
+	assert(m.numItems() == 2); //only 1 "John"
+	int* i = m.find("John"); //testing find
+	int* j = m.find("Robert");
+	assert(*i == 5); //correctly overwrote "3"
+	assert(*j == 4);
+	
+	std::string s;
+	i = m.getFirst(s);
+	std::cout << "Key: " << s << "\tVal: " << *i;
+	i = m.getNext(s);
+	std::cout << "Key: " << s << "\tVal: " << *i;
+
+	/* output is either
+	 * Key: John	Val: 5
+	 * Key: Robert	Val: 4
+	 * or vice versa. */
+
+	i = m.getNext(s);
+	assert(i == NULL); //reached the end
+}
+
+Crawler:
+int main()
+{
+	Crawler c("www.ucla.edu"); //constructor
+	for (Document* d = c.crawl(); d != NULL; d = c.crawl()) //testing crawl()
+	{
+		string s;
+		d.getFirstWord(s); 
+		cout << s << endl;
+		while (getNextWord(s))
+			cout << s << endl;
+	}
+}
+ //repeat this for a variety of websites
+ //check the source for each site and check that the outputted addresses are 
+ //present in the same form in the site's html
+	
+Rule:
+int main()
+{
+	string rule1 = "rule-00000000  0.81 LOSING HAIR &  > Click to learn how HayrGrow can help you grow hair!";
+ 	string rule2 = "rule-00000001  0.75 BALD SPOT & THINNING HAIR & |  > Click here for a full head of hair!";
+
+	Rule r1(rule1); //testing constructor
+	Rule r2(rule2);
+
+	assert(r1.getName() == "rule-00000000");
+	assert(r2.getName() == "rule-00000001"); //checking getName()
+
+	assert(r1.getDollarValue() == .81);
+	assert(r2.getDollarValue() == .75); //checking getDollarValue()
+
+	assert(r1.getNumElements() == 3);
+	assert(r2.getNumElements() == 7); //getNumElements
+
+	assert(r1.getElement(1) == "HAIR");
+	assert(r1.getElement(2) == "&");
+	assert(r2.getElement(0) == "BALD");	//getElement
+
+	assert(r1.getAd() == "Click to learn how HayrGrow can help you grow hair!");
+	assert(r2.getAd() == "Click here for a full head of hair!"); //getAd
+}
+
+Document:
+int main()
+{
+	string s = "Test1 Test2 Test3!Test4\"Test5,ucla";
+	Document d("www.ucla.edu", s);
+	
+	assert(d.getURL() == "www.ucla.edu"); //getURL()
+	assert(d.contains("ucla")); //contains
+	assert(!d.contains("asfnio")); //contains
+	assert(!d.contains("")); //contains
+	assert(!d.contains("!")); //contains; checking to see that certain characters
+				  //were correctly skipped over
+	assert(!d.contains("\""));
+
+	assert(d.getFirstWord(s)); //getfirstword
+	cout << s << endl;	 //should be Test1
+	while (d.getNextWord(s))
+		cout << s << endl; //getNextWord
+	/* should be:
+	 * Test2
+	 * Test3
+	 * Test4
+	 * Test5
+	 * ucla
+	 */
+	assert(!d.getNextWord(s)) //calling it more should still result in NULL
+
+
+	s = "";
+	Document e("www.a.com", s);
+	assert(e.getURL() == "www.a.com");
+	assert(!e.getFirstWord(s)); //should be NULL because no words
+
+	Document f("", "Test Test2");
+	assert(f.getURL() == ""); //url doesn't return NULL
+	assert(f.contains("Test")); //contains
+	assert(!f.contains("Test3"));
+	assert(f.contains("tEsT2")); //contains works with any case
+}
+
+Matcher:
+int main()
+{
+	//hard to test because need an input document to initialize
+	//document "test.txt":
+	// rule-00000000  0.81 LOSING HAIR &  > Click to learn how HayrGrow can help you grow hair!
+ 	// rule-00000001  0.75 BALD SPOT & THINNING HAIR & |  > Click here for a full head of hair!
+
+	ifstream test("test.txt");
+	Matcher m(test);
+	
+	Document d1("www.fake.com", "I seem to be losing hair.");
+	Document d2("www.fake.com", "I have a bald spot.");
+	Document d3("www.fake.com", "I have thinning hair.");
+	Document d4("www.fake.com", "I have a thinning spot.");
+	Document d5("www.fake.com", "I am losing hair, I have a bald spot.");
+	vector<Match> vM;
+	
+	m.process(d1, 0, vM);
+	assert(vM.size() == 1); //rule-0, no rule-1	
+	m.process(d2, 0, vM);
+	assert(vM.size() == 1); //rule-1, no rule-0
+ 	m.process(d3, 0, vM);
+	assert(vM.size() == 1); //rule-1, no rule-0
+	m.process(d4, 0, vM);
+	assert(vM.size() == 0); //neither
+	m.process(d5, 0, vM);
+	assert(vM.size() == 2); //both
+
+	m.process(d5, .8, vM);
+	assert(vM.size() == 1); //testing minPrice
+	m.process(d1, 1, vM);
+	assert(vM.size() == 0); //minPrice
+}
+
+AdHunter:
+int main()
+{
+	/* RULES.TXT
+	 * rule-00000000 0.15 THE > This is a really easy ad to hit.
+	 * rule-00000001 1.11 ALLIGATOR JOHNSON ASOLNK & & > This is a really hard ad to hit.
+	 */
+
+	ifstream rules("rules.txt");
+	AdHunter ah(rules);
+	ah.addSeedSite("www.ucla.edu"); //checking addSeedSite
+	vector<Match> VM;
+	ah.getBestAdTargets(0, 1, VM);
+	assert(VM.size() == 1); //rule-0
+	
+	ah.getBestAdTargets(0, 2, VM);
+	assert(VM.size() == 2); //rule-0, 2 levels
+
+	ah.getBestAdTargets(1, 2, VM);
+	assert(VM.size() == 0); //minPrice
+
+	ah.addSeedSite("www.yahoo.com");
+	ah.getBestAdTargets(0, 1, VM);
+	assert(VM.size() == 2); //rule-0, 2 seed sites
+
+	ah.getBestAdTargets(0, 2, VM);
+	assert(VM.size() == 4); //rule-0, 2 seed sites, 2 deep
+
+	ah.getBestAdTargets(1, 2, VM);
+	assert(VM.size() == 0); //minPrice
+}
+
+
+3. Known Bugs / Issues
+ -- malformed Rules in the input file will behave erroneously and may cause the program
+	to crash.
+ --I am unsure what my program does if multiple copies of the same website are 
+	added to AdHunter with the addSeedSite function.

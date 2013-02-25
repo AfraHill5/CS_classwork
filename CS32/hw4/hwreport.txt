@@ -1,0 +1,39 @@
+Zach North
+603 885 768
+Homework 4
+
+2.
+The problem with the call to Bag<URL>::insert is that it initializes a URL object and 
+tries to insert it at the same time. The URL needs to have a variable name associated
+with it -- you can't just insert a blank URL object and initialize it at the same time.
+To fix this, either put "new" in front of the object so it is initalized at runtime, or
+put "URL u = new URL("http://www.symantec.com")" on the line before it, and 
+"bu.insert(u)" instead of the last line.
+
+
+3b.
+In order to recursively output the different string pathnames of the various files, the 
+program needs to have the ability to pass all the previous pathnames to the next directory.
+When the function reaches party.jpg, it needs to have all the previous pathnames so it 
+can output the exact location and not just the name of the file with no background. Thus,
+as it goes "deeper" it can keep track of every directory "opened" so when it finally
+reaches the "end" (a non-directory file) it can output all the previous directories as well.
+
+
+4a.
+This function is O(N^3); it contains 3 nested for loops that are each called N times.
+
+b.
+Still O(N^3), but faster than a. The second loop still increases in magnitude relative to N.
+
+
+5a.
+Time complexity is O(N). Specifically, it checks 2 items for every N number of items in the first
+bag, so the time taken increases directly with N.
+
+b.
+Time complexity is still O(N), but this algorithm is slower than the one in a. A runs relative to
+2N, while b is closer to 4N due to its 3 for loops, one for each Bag and one the size of both
+Bags combined.
+
+

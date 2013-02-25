@@ -1,0 +1,102 @@
+Zach North
+603885768
+Lab 1 Log
+
+
+1.
+Log:
+man man
+/print 
+
+2.
+Log:
+man -k find
+man -k where
+man whereis
+whereis cp
+whereis wc
+
+3.
+Log:
+man find
+/type
+echo $PATH
+find -P PATH -iname ?
+(run once for each PATH displayed by echo $PATH)
+
+
+man X
+man [
+man w
+
+
+4.
+Log:
+man cron
+/daylight
+
+5.
+Log:
+man cc
+
+6. 
+Log:
+man chmod
+/g-s
+
+7. 
+Log:
+man -k find
+man -k where
+man whereis
+
+8.
+Log:
+man find
+/day
+/modified
+
+9.
+Log:
+find -mtime -3
+
+10.
+Log:
+man find
+/symbolic
+/-type
+find -type l
+
+11. 
+Log:
+man ls
+(scroll to bottom)
+Authors are listed
+
+
+12.
+Log:
+man ls
+/find
+/old
+ls -t -l
+
+13.
+Log:
+man -k wh
+
+14.
+Log:
+vim test
+:help d
+:help w
+
+
+15.
+Log:
+man locale
+
+
+
+
+

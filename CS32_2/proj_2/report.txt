@@ -1,0 +1,369 @@
+Zach North
+603885768
+Project 2 Report
+
+Linked List Description
+
+My implementation of the linked list in the Map class uses a doubly-linked list 
+with both a head and tail pointer. The size of the list is tracked by a seperate
+variable. Inserting a value into the list adds it to the end of the list, using
+the tail pointer for quick reference.
+
+My list has individual nodes of the aptly named Node class, containing:
+
+ -KeyType k
+ -ValueType v
+ -Node* prev
+ -Node* next
+
+The list is set up as follows:
+
+ 	 m_head  			m_count == 4		m_tail
+ 	   ||        						   ||
+	   \/      						   \/
+	    							   
+	   _____           _____              _____              _____   
+	  |NODE |         |NODE |            |NODE |            |NODE |      
+	  | A   |         | B   |            | C   |            | D   | 
+	  | next|-------->| next|-------->   | next|-------->   | next|-->NULL
+NULL<-----|prev_|<--------|prev_|   <--------|prev_|   <--------|prev_|
+
+
+
+
+Pseudocode:
+
+The code for the constructor and destructor are trivial.
+The destructor simply loops through all nodes and deletes them all.
+
+Map::Map(const Map& src) //copy constructor
+{
+   make a new Node* pointing to the head of src called curr_src;
+   make a new Node* pointing to NULL called prev (used later);
+   while curr_src is not NULL:
+      create a new Node;
+      set the value and key of the new Node to those of curr_src;
+      set the "previous" pointer in the Node to prev;
+      set the "next" ptr in the Node to NULL;
+      if prev is not NULL:
+         set the next pointer of the previous Node to the address of the current Node;
+      increment m_size;
+      if the size is equal to 1:
+         set the m_head pointer to the address of the current Node;
+      if the size is equal to the size of src:
+         set the m_tail ptr to the address of the current Node;
+      set prev to the current Node;
+      set curr_src to the next node in src;
+}
+ 
+Map& Map::operator=(const Map& src) //= operator
+{
+   if the head ptr and src's head ptr point to the same thing:
+      break; //prevents aliasing
+
+   make a new Node* pointing to the head of src called curr_src;
+   erase all of the current list;
+   set the head and tail to NULL;
+   set the count to 0;
+
+   while curr_src is not NULL:
+      insert a new Node with the key and values in the Node it\
+      points to;
+      set curr_src to the next Node in the list;      
+}
+
+bool Map::empty()
+//trivial
+
+bool Map::size()
+//trivial
+
+bool Map::insert(const KeyType& key, const ValueType& value)
+{
+   if contains(key) returns true:
+      return false;//this means the key is already present
+
+ 
+   //I chose to implement this function as inserting at the end of the list
+   //rather than at the beginning or middle.
+
+   make a new Node pointed to by Node* A;
+   set the value and key of A to the inputted value/key;
+   set A's next ptr to NULL //ditto
+
+   if the list is empty: //trivial to implement if no other nodes, so just make a special case
+      set A's prev pointer to NULL;
+      set the head and tail ptr to A;
+      increment the size counter;
+      return true;
+
+   //if the list is not empty, need to do a bit more work
+
+   set A's prev ptr to equal to the tail;
+   set the Node pointed to by tail's next ptr to equal A;
+   set the tail ptr to point to A; //because we add at the end
+   
+   set A's previous ptr to prev;
+   increment the size counter;
+   return true;
+   //the only time this function will ever return false is if the
+   //computer runs out of dynamic memory. I do not know how to catch
+   //this exception.
+} 
+
+bool Map::update(const KeyType& key, const ValueType& value)
+{
+   make a new ptr called curr that points to m_head;
+   while curr is not NULL:
+      if curr's key value is equal to the inputted key:
+         set curr's value to the inputted value;
+         return true;
+
+   return false; //if the loop breaks without returning, the key 
+                 //wasn't found so return false
+}
+
+bool Map::insertOrUpdate(const KeyType& key, const ValueType& value)
+{
+   if update(key, value) is called and returns false:
+       //this means the value is not in the list, so we must insert
+      call insert(key, value);
+      
+   return true; 
+   //the map does not have a fixed capacity unless it runs out of 
+   //memory, so it should never return false. 
+}
+
+bool Map::erase(const KeyType& key)
+{
+   if contains(key) is false:
+      the Node isn't in the list, so return false;
+
+   declare a Node* curr that points to m_head;
+   while the Node pointed by curr does not have the same\
+   key as the inputted key:
+      set curr equal to the next value in the list;
+
+   //when this loop breaks, curr will point to the Node to be erased
+   set a Node* equal to curr's previous and next Nodes;
+   delete curr;
+   if the previous Node is NULL: //it was the first item in the list
+      set the m_head to the next item;
+   else //it was not the first item
+      set the previous Node to point it's next ptr to the next node;
+
+   if the next Node is NULL: //it was the last item in the list
+      set the m_tail to the previous item;
+   else //it was not the first item
+      set the next item to point to it's prev ptr to the previous node;
+
+   decrement the node count;
+   return true;
+}
+
+bool Map::contains(const KeyType& key) const
+{
+   declare a Node* that pts to head called curr;
+   while curr is not NULL:
+      if the key pointed by curr is equal to the inputted key:
+         return true; //found the value in the map
+      set curr equal to the next value in the list;
+
+   return false if the loop breaks;
+}
+
+bool Map::get(const KeyType& key, ValueType& value) const
+{
+   declare a Node* called curr that points to the head;
+   while curr is not NULL:
+      if key is equal to the key value of the node pointed by curr:
+         set value equal to the node's value;
+         return true;
+      set curr equal to the next Node in the list;
+   
+   return false if the loop breaks; 
+}
+
+bool Map::get(int i, KeyType& key, ValueType& value) const
+{
+   if i is < 0 or i is >= the size of the list:
+      return false;
+   
+   create a Node* equal to head called curr;
+   loop i times:
+      set curr equal to curr's next pointer;
+
+   set key equal to the key in the node pointed by curr;
+   set value equal to the value in the node pointed by curr;
+   return true;
+}
+
+void Map::swap(Map& other)
+{
+   swap the node counts;
+   swap the head ptrs; 
+   swap the tail ptrs;
+}
+
+bool combine (const Map& m1, const Map& m2, Map& result)
+{
+   initialize a KeyType and ValueType called key and val;
+    //used for testing
+   initialize a boolean called noDuplicateError to true;
+    //used to track if m1 and m2 have 2 keys with diff vals
+
+   set result to an empty Map; //need to delete old values
+
+   loop (m1's size) times:
+      insert the current iteration's key and value into result;
+
+   loop (m2's size) times: 
+      call m2's get(current iteration, key, val);
+      if m2's key is equal to a key in result:
+         if the values are the same:
+            do nothing and go to the next iteration;
+         if the values are different:
+            delete the node from result;
+            set noDuplicateError to false;
+            go to the next iteration;
+      if get returns false:
+         insert the current iteration's key/value into result;
+         go to next iteration;
+            
+   
+   return duplicateError; //true if values are all unique for each key
+}
+
+void subtract(const Map& m1, const Map& m2, Map& result)
+{
+   initialize a Keytype and Valuetype called key and value;
+   clear the result of all Nodes;
+
+   loop (m1's size) times:
+       call m1's get(current iteration, key, val);
+       insert the key and value pair into result;
+   
+   loop (m2's size) times:
+       call m2's get(current iteration, key, val);
+       if the result contains the key in m2:
+          remove it from the result;
+}
+
+
+Test Code: 
+
+#include <cassert>
+#include <iostream>
+
+int main()
+{
+	Map m; //checks the constructor
+	assert(m.empty()); //test empty
+	assert(m.insert("Bob", 1)); //insert
+	assert(!m.empty()); //test not empty
+
+	assert(!m.insert("Bob", 2)); //insert should fail because Bob already there
+	assert(m.update("Bob", 5)); //should update bc bob already exists
+	assert(m.insert("Joe", 3)); //insert
+	assert(m.insertOrUpdate("Joe", 4)); //should update + return true
+	assert(m.insertOrUpdate("Joseph", 10)); //should insert + return true
+	assert(!m.update("Aaa", 3)); //should do nothing + return true
+
+	assert(m.size() == 3); //should be 3 items
+
+	Map mcopy(m); //testing the copy constructor
+	assert(mcopy.size() == m.size() && mcopy.contains("Bob")
+		    && mcopy.contains("Joseph") && mcopy.contains("Joe"));
+
+	
+	assert(m.erase("Bob")); //should return true + erase
+	assert(!m.erase("Aaa")); //should return false + do nothing
+
+	assert(m.size() == 2); //just erased an item
+	assert(m.contains("Joe")); //Joe should still exist
+	assert(m.contains("Joseph")); //Joseph should still exist in Map
+	assert(!m.contains("Bob")); //Bob should have been erased
+	assert(!m.contains("Aaa")); //Aaa should not be in the Map
+
+	KeyType key; ValueType val;
+
+	key = "Aaa";
+	assert(!m.get(key, val)); //checking that it correctly returns false
+
+	key = "Joe";
+	assert(m.get(key, val));
+	assert(val == 4); //get should have found Bob and updated val
+	
+	int i = 0;
+	assert(m.get(i, key, val)); //checking the alternate get
+	i = m.size();
+	assert(!m.get(i, key, val)); //i is now too big, should fail
+	
+	Map m2;
+
+	m.swap(m2);
+	assert(m.empty() && !m2.empty() && m2.size() == 2); //checking the swap worked
+	assert(m2.contains("Joe") && m2.contains("Joseph")); //ditto
+
+
+	Map m3;
+	Map m4;
+	Map mresult;
+
+	assert(combine(m3, m4, mresult));
+	assert(mresult.empty()); //checking that combine works with empties
+	subtract(m3, m4, mresult);
+	assert(mresult.empty()); //checking that subtract works with empties
+
+	m3.insert("Fred", 123);
+	m3.insert("Ethel", 456);
+	m3.insert("Lucy", 789);
+
+	assert(combine(m3, m4, mresult)); //checking combine
+	assert(mresult.size() == 3); //checking that combine works with 1 empty
+	assert(m4.empty());
+
+	m4.insert("Ricky", 321);
+	m4.insert("Ethel", 123);
+	m4.insert("Lucy", 789);
+
+	assert(!combine(m3, m4, mresult)); //checking combine returns false for duplicates
+	assert(mresult.size() == 3 && !mresult.contains("Ethel") 
+			&& mresult.contains("Lucy"));
+	//still should modify mresult
+
+	mresult.insert("Aaa", 999);
+	assert(!combine(m3, m4, mresult));
+	assert(mresult.size() == 3 && !mresult.contains("Ethel") 
+			&& mresult.contains("Lucy"));
+	//combine should delete extraneous values
+
+	subtract(m3, m4, mresult);
+	assert(mresult.size() == 1 && !mresult.contains("Lucy")
+		    && !mresult.contains("Ethel"));
+
+	Map empty;
+	subtract(m3, empty, mresult);
+	assert(mresult.size() == m3.size()); //checks when subtract an empty
+	subtract(empty, m3, mresult);
+	assert(mresult.empty()); //checks when subtracting from an empty
+	subtract(m3, m3, mresult);
+	assert(mresult.empty()); //checks aliasing performs correctly
+	subtract(empty, empty, mresult);
+	assert(mresult.empty()); //checks aliasing performs correctly
+
+	m3 = m4; //tests the =operator
+	assert(m3.contains("Ricky") && !m3.contains("Fred"));
+
+	
+	m3 = empty; //tests =operator with an empty
+	assert(m3.empty());
+	empty = m4; //tests the other side
+	assert(empty.contains("Lucy") && empty.contains("Ricky") 
+			&& empty.contains("Ethel") && empty.size() == 3);
+	  
+	empty = empty;
+	assert(empty.size() == 3); //tests aliasing
+
+	cout << "All tests passed." << endl;
+}

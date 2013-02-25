@@ -1,0 +1,2 @@
+rule-00000000 0.15 THE > This is a really easy ad to hit.
+rule-00000001 1.11 ALLIGATOR JOHNSON ASOLNK & & > This is a really hard ad to hit.

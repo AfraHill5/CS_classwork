@@ -1,0 +1,387 @@
+Zach North
+603 885 768
+Project 3 Writeup
+
+----------------------
+FUNCTION DESCRIPTIONS |
+----------------------
+Actor tree structure:
+			ACTOR
+		       /     \
+		   N.MAN    MONSTER
+			         \
+				INKY
+				STINKY
+				DINKY
+				CLYDE
+
+Actor functions:
+
+All of the functions defined in ACTOR were done so because both NachMan and the Monsters require their use.
+For example, all Actors have coordinates, directions, and colors, so they can be grouped together here.
+
+virtual int GetX()
+returns the x-coordinate of the actor. This is stored in a private data member in Actor.
+
+virtual int GetY()
+ditto, but for the y-coord.
+
+virtual void SetX(int newXCoord)
+sets the current x-coordinate of the actor to the specified value.
+
+virtual void SetY(int newYCoord)
+ditto for the y-coord.
+
+virtual void DoSomething() = 0
+Moves the actor according to its specified subclass movement instructions. It is pure virtual because
+all of the actors move in different ways -- either responding to user input or running off algorithms.
+
+virtual colors GetDisplayColor() = 0
+Returns the color of the actor. This function is pure virtual because every actor is a different color.
+
+virtual World* getWorld()
+Returns a pointer to the current world of the actor, which is stored in a private data member.
+
+virtual void setWorld(World* w)
+Sets the current world of the Actor and modifies the private data member pointing to the current world.
+
+virtual Direction getDirection()
+Returns the current direction the Actor is facing, stored in a private data member.
+
+virtual void setDirection(Direction d = NONE)
+Changes the current direction of the Actor and changes the data member. Default is NONE to make it easier to implement 
+in constructors.
+
+virtual int getMyID() = 0
+Returns a different value depending on the ID of the actor. This is virtual because we want each seperate 
+subclass of actor to return a different value, so we can identify them.
+
+Actor()
+Initializer. Sets the current x-coord and y-coord to 0, the current world pointer to NULL, and the direction to NULL.
+
+~Actor()
+Destructor. Does nothing, because there is no dynamically allocated resources to free.
+
+
+
+NachMan functions:
+
+NachMan is a class of Actor controlled by the player. Any functions relating to score, lives or any player
+controlled actions belong in his class.
+
+int GetNumLivesLeft()
+Returns the number of lives NachMan has left, stored in a private member.
+
+void DecrementNumLives
+Reduces the number of lives left by one.
+
+int GetScore()
+Returns the current score, stored in a private member.
+
+void incrementScore(int n)
+Increases the current score by n. 
+
+colors GetDisplayColor()
+Returns YELLOW (the color of NachMan).
+
+int getMyID()
+Returns ITEM_NACHMAN.
+
+void DoSomething()
+Takes user input and converts it to movement. Every tick, this function is called, checks the current arrow
+key direction, and if possible moves NachMan in that direction. If he runs over a monster, pellet, or powerpellet, 
+this function handles either his death, eating a vulnerable monster, eating a pellet/powerpellet, or hitting a wall.
+
+bool isAlive()
+Returns true if NachMan's current private member dictating his life state is true, and false if it is false.
+
+void setAlive(bool state)
+Changes NachMan's state to alive or dead.
+
+void setLives(int n = 3)
+Sets NachMan's number of lives to the specified amount. Lives are stored in a private data member.
+
+void setScore(int n = 0)
+Sets the score to the specified amount.
+
+NachMan(World* currentWorld, int X, int Y)
+Initializes NachMan with a current World, an X coord, and a Y coord. The constructor also sets his alive state
+to true, his score to 0, and his lives to 3.
+
+~NachMan()
+Destructor. Does nothing.
+
+
+Monster functions:
+
+Monster is a subclass of Actor, but a superclass to the 4 subtypes of monsters. Any functions common to the
+4 monsters are contained in this class. Thus, it contains all virtual functions.
+
+virtual void DoSomething()
+Moves the monster towards its target. The movement algorithm is based on a complex analysis of the surrounding walls,
+the monster's current direction, and whether or not the monster can directly advance towards its target. In general, 
+this function is optimized to avoid "shuffling" (monsters moving back and forth constantly) while still getting the 
+monster to its target as fast as possible.
+
+virtual int getMyID() = 0
+This function is abstract because when the function is called it wants to know a specific type of monster, not just
+that the actor is question is a monster of some kind.
+
+virtual void setTargetX(int x)
+This sets the x-coord of the monster's target to the inputted value. The target is stored in a private data member.
+
+virtual void setTargetY(int y)
+Ditto for the y-coord. It is stored in a seperate private data member.
+
+virtual int getTargetX()
+Returns the target x-coord data member.
+
+virtual int getTargetY()
+Returns the target y-coord data member.
+
+virtual void setCurrentState(MonsterStates newState)
+This changes the current state of the monster (normal, vulnerable, monsterdie, returntohome) to the inputted state.
+The monster's state controls it's behavior, and is stored in a private data member of the Monster class.
+
+virtual int getCurrentState()
+Returns the current state of the monster.
+
+virtual void setVulnerableCount(int count)
+When the monster is in a vulnerable state, it remains in that state for a certain number of ticks before
+returning to the normal state. This function sets the private data member tracking the number of ticks to
+the inputted value.
+
+virtual int getVulnerableCount()
+Returns the number of ticks in the monster's current vulnerable state.
+
+virtual void decrementVulnerableCount()
+Decrements the number of ticks in the vulnerable count. This is called every tick until the count equals zero.
+
+virtual colors GetDisplayColor() = 0
+Returns the monster's color. This is pure virtual because a generic Monster has no color.
+
+virtual void Vuln()
+This function contains the defualt behavior of a vulnerable monster. Every monster except Clyde uses the defualt behavior, which 
+is to pick a random spot in the maze every tick and set it to the current target. This function contains that algorithm and is
+called by the individual monsters in their seperate DoSomething() functions if their current state is "vulnerable."
+
+virtual void Normal() = 0
+Every monster has a seperate normal behavior, so this function is pure virtual because there is no "defualt." Each monster in turn
+defines its own Normal().
+
+virtual void MonsterDie()
+The default behavior for monsters in the monsterdie state. Simply transitions to the returntohome state.
+
+virtual void ReturnToHome()
+Default behavior for monsters in the returntohome state. This function sets the monster target to the original starting spot and checks to 
+make sure they have made it there; if they have, it resets their state to normal.
+
+Monster()
+Constructor. Sets the monster's current state to normal, its vulnerability count to 0, and its target to (0,0).
+
+~Monster()
+Destructor; does nothing.
+
+
+Inky functions:
+
+Inky is a subclass of Monster. Most of his functions are defined in Monster, but he requires a couple unique ones as well.
+
+virtual void DoSomething()
+Inky's movement algorithm. Calls Normal() if his state is normal, Vuln() if his state is vulnerable, etc.
+
+int getMyID()
+Returns Inky's ID (ITEM_MONSTER1).
+
+int getInkyCounter()
+Inky is unique in that every ten ticks, he decides whether or not he will chase NachMan for the next ten ticks.
+This function returns how many ticks are left in his current behavior cycle, stored in a private variable.
+
+void resetInkyCounter()
+Resets his behavior counter to ten ticks. This function is called whenever he reaches the end of his current cycle and makes up his 
+mind whether to chase NachMan or not.
+
+bool inkyChase()
+Returns whether or not Inky is currently in "chase NachMan" mode. This is stored in a private variable.
+
+void setChase(bool b)
+Changes inky's behavior boolean to true(chase) or false (don't chase/random).
+
+colors GetDisplayColor()
+Returns Inky's color (RED/LIGHTGRAY/LIGHTBLUE depending on state).
+
+void Normal()
+Inky's movement algorithm. Every ten ticks he decides whether or not to chase NachMan via a random number generator;
+if he decides to chase, his target is set to NachMan's current location; if he doesn't, it is set to a random spot in
+the maze. This function then calls Monster::DoSomething() in order to move Inky, and then checks whether he has hit NM and what
+to do if he has.
+
+Inky(World* world, int x, int y)
+Initializer; sets Inky's world pointer (stored in an Actor class private member) and his current x/y coords.
+
+~Inky()
+Destructor; does nothing.
+
+
+Stinky functions:
+
+Stinky is a subclass of Monster. Most of his functions are defined in Monster, but he requires a couple unique ones as well.
+
+virtual void DoSomething()
+Identical to Inky's. Calls different behaviors depending on his current state.
+
+int getMyID()
+Returns Stinky's ID (ITEM_MONSTER2).
+
+colors GetDisplayColor()
+Returns Stinky's color (LIGHTGREEN/LIGHTBLUE/LIGHTGRAY depending on state)
+
+void Normal()
+Stinky's movement algorithm. Stinky can smell NachMan if he is close to him, so his algorithm checks NachMan's location -- if it is 
+close enough (within 5 grid square in the x and y direction) it sets Stinky's target to NachMan's current location. Otherwise it just sets 
+it to a random spot in the grid. The function then calls Monster::DoSomething() to move Stinky and then checks whether he has landed on NachMan, 
+doing something based on his current state.
+
+Stinky(World* world, int x, int y)
+Initializer; sets Stinky's world pointer (stored in an Actor class private member) and his current x/y coords.
+
+~Stinky()
+Destructor. Does nothing
+
+
+Dinky functions:
+
+Dinky is a subclass of Monster. Most of his functions are defined in Monster, but he requires a couple unique ones as well.
+
+virtual void DoSomething()
+Identical to the other monsters. Different calls depending on current state.
+
+int getMyID()
+Returns ITEM_MONSTER3.
+
+colors GetDisplayColor()
+Returns Dinky's color (LIGHTMAGENTA/LIGHTBLUE/LIGHTGRAY depending on state.)
+
+void Normal()
+Dinky's movement algorithm. It checks first whether Dinky is in the same row or column as NachMan; if he is, it then checks if there
+are any walls between the two of them. If there are not, Dinky can "see" Nachman and sets his target to NM's current location. If not, 
+he just sets his target to a random square in the maze. Then the function calls Monster::DoSomething() to move Dinky, and checks to see if
+he has hit NachMan, performing different actions as necessary if he has.
+
+Dinky(World* world, int x, int y)
+Identical to the Stinky initializer.
+
+~Dinky()
+Destructor. Does nothing.
+
+
+Clyde functions:
+
+Clyde is a subclass of Monster. Unlike the other monsters, however, he has a different Vuln() algorithm.
+
+virtual void DoSomething()
+Identical to other monsters.
+
+int getMyID()
+Returns ITEM_MONSTER4.
+
+colors GetDisplayColor()
+Return's Clyde's color(LIGHTCYAN/LIGHTGRAY/LIGHTBLUE depending on state.)
+
+void Normal()
+Clyde's normal movement algorithm. Clyde never chases NM, he just sets his target to a random spot in the maze. Then he calls Monster::DoSomething()
+to move, and then checks whether he has hit NachMan and adjusts accordingly.
+
+void Vuln()
+Clyde's unusual vulnerable movement algorithm. When vulnerable, Clyde sets his target to the exact opposite corner of the maze from the current quadrant
+NachMan is in -- for example, if NachMan is in the bottom right quadrant, Clyde's target is set to the top left corner of the maze. After this the function
+calls Monster::DoSomething() to move Clyde and checks whether he has hit NachMan.
+
+Clyde(World* world, int x, int y)
+Same as Dinky.
+
+~Clyde()
+Destructor, does nothing.
+
+
+MyWorld functions:
+
+MyWorld contains only one function: RunLevel().
+
+virtual GameStatus RunLevel()
+This function basically controls the entire game. It first uses some World functions to grab pointers to the current NachMan, the four monsters, and the maze
+(so it can modify the maze as the game progresses.) Then it puts NachMan and the monsters in the maze at their starting location, sets NachMan to ALIVE and his
+direction to NONE, and redraws the screen. The actual game is contained in a loop that only breaks when either NachMan dies, or eats all the food. The loop
+first tells NachMan to move using DoSomething(), checks if he is alive as a result of his movement, then tells all the monsters to DoSomething(). Then it updates the
+screen with the results, and does it again. This continues until the loop breaks, meaning one of two things -- NachMan died or the food is gone. If NachMan died,
+the function returns the game status PLAYER_DIED; if the food is gone, it returns FINISHED_LEVEL. 
+
+
+MyMaze functions:
+
+MyMaze is a subclass of maze that deals with the integer grid representing the distance from the home square each of the monsters use to return home. 
+
+MyMaze(GraphManager* gm)
+Constructor. Sets a pointer to the GraphManager class that the maze can use to change elements later.
+
+~MyMaze()
+Destructor, does nothing.
+
+bool LoadMaze(const std::string &sMazeFile)
+This function is called whenever a new maze file is loaded. This class is used to calculate the distances from the monster home square to different points in the maze,
+so it is easy for the monsters to know how to get home. First, the function calls the Maze version of LoadMaze in order to parse the text input into an array representing 
+the array. Then it loads the grid into a temporary array and calls setDistances with this grid.
+
+bool setDistances(int maze[MAZE_HEIGHT][MAZE_WIDTH], int sX, int sY) [private]
+SetDistances is responsible for finding the distances to every accessable spot in the maze and storing it in a private member integer array. It uses the algorithm from
+homework 2 to find these distances, and stores them in a private member of MyMaze.
+
+bool GetNextCoordinate(int curX, int curY, int& newX, int& newY)
+This public function is called by the monsters to find the next square they should move on to if they are returning to home. It compares values in the distance array
+and finds the smallest one relative to the monster's current location, then sets that as the monster's target.
+
+
+
+---------------------
+FUNCTIONALITY ISSUES |
+---------------------
+
+Personally I don't know of any bugs in my project. I finished everything as required, and to my knowledge everything works. However, it is very difficult to test the monster
+behavior to see if it is actually behaving as it should (i.e. Inky ALWAYS chases 20% of the time, Clyde accurately changes his targets to opposite quadrants, etc.) so that
+may contain some problems I am unaware of.
+
+I never really encountered any ambiguity and have no real comments on it.
+
+
+
+
+--------
+TESTING |
+--------
+
+Actor:
+I tested the Actor classes mostly by stepping through their function calls with the debugger and checking to make sure each of the functions was returning accurate results.
+For the most part, these errors were obvious -- an example was I repeatedly kept calling the SetY() function with the X-coordinate of the target, rather than the Y. Also, any
+bugs in the actor class were immediate and glaring when the game loaded -- monsters overtaking the screen, Nachman not eating powerpellets, etc. Particularly troublesome 
+functions were ones that were not called very frequently, such as Inky's behavior modification logic, so in those cases i would just use breakpoints to stop the game and then
+step through to see what was going wrong.
+
+MyWorld:
+RunLevel() didn't require much testing -- if it didn't work, the game wouldn't start. Its logic is fairly straightforward regardless, so again I mostly fixed errors using the debugger
+here. I had a lot of syntax problems with the monsters and had to continutally use breakpoints to make sure that they were being created and that their DoSomething() functions
+were actually being called.
+
+MyMaze:
+This class was a lot harder to test because it was never immediately apparent in the game whether the distance array was being created correctly. To test this I made setDistances()
+write to cout and checked manually that the distance array was correct for the current maze. I also used a variety of different mazes to make sure it didn't just work with
+the one, and used the debugger to step through LoadMaze to make sure the text was being accurately translated into the array of chars. Finally, GetNextCoordinate gave me a 
+surprising amount of trouble, as I was trying to use a case structure for awhile to implement it, but eventually just settled on the less-pretty but much more efficient series
+of if statements. I tested this function mainly using the debugger and comparing it to the cout of the setDistances array to make sure it was correctly finding the correct
+path in the maze back to the starting point.
+
+
+
+
+
+
+

@@ -1,0 +1,479 @@
+Zach North
+603885768
+HW2
+
+1.
+Since p_i is 2^(w_i), the value to minimize in the product is ((2^(w_i))^C_i) or 2^(C_i * w_i).
+C_i will increase as we multiply from i=1 to i=n. Therefore it makes the most sense to multiply the
+largest w_i values by C_i "earlier" rather than later -- that is, with lower i values -- if we want
+to minimize the final result.
+
+Given a group of n jobs with processing time t_i and weight w_i for each job:
+
+For each job j we want to calculate the value of (C_j * w_j), with C_j being the value of 
+C up to this point plus t_j (the time it will take to complete the current job being looked at.)
+Since we want to perform the most work-intensive jobs earlier rather than later, we execute the
+job with the maximum (C_j * w_j) score, and repeat the process with our new C value and
+the remaining jobs.
+
+2.
+a. I drew out the trees as requested. The work here is not entirely original. I fully admit that I 
+got the tree design from the movie, but that is simply an unfortunate side effect of seeing it recently!
+
+b.
+
+base case:
+n==1: the total number of binary trees is 1.
+(2 pick 1) / (2) == 2/2 == 1.
+
+continuing:
+n==2: the total number of binary trees is 2.
+(4 pick 2) / (3) == 2.
+
+inductive case:
+n:
+(2n pick n) / (n+1) == 
+
+(2n!)
+----------------
+(n+1)(n!)^2
+
+n+1:
+(2n+2 pick n+1) / (n+2) ==
+
+(2n+2)!
+---------------- ==
+(n+2)!(n+1)!
+
+     (2n+1)  (2n!)
+2 *  ------------------- 
+     (n+2)   (n+1)(n!)^2
+	 
+which is reducable to prove the inductive case. Each increment of n increases by a fixed amount.
+
+c. 
+
+base case:
+n==1:
+2^0 == 1.
+
+n==2: 
+(2^-1) + (2^-1) == 1.
+
+to extend the tree, we must add on two new paths from one of the leaves.
+two of the paths will now contribute 1/2 of what they previously did.
+2 * 1/2 == 1, so they will contribute exactly what the previous leaf did.
+Therefore, no matter how much we extend the tree, we will always get exactly 1.
+
+d. 16796 (plugging n==10 into the formula from B.)
+
+e. The number of ordered n-ary trees is given by a formula by Catalan:
+
+(1/Kn+1) (Kn+1 pick n)
+
+Plugging in K==3, we have the number of ordered ternary trees as
+(1/3n+1) (3n+1 pick n)
+
+f. 
+i. Six sample items would be:
+A		B		C		D		E		F
+.35		.25		.2		.1		.07		.03
+ 0  	10		110		1110	11110	11111
+ 
+ii. no, because the most probable value (just '0') would be indistinguishable from other 0s.
+The 10 prefix is needed because it then indicates to "stop" on the next 0 and start parsing again.
+
+3.
+for each node i in a degree sequence [d_1, d_2, ...]:
+	let num = d_i
+	for each node s in the remainder of the list:
+		if s == 0, return false.
+		else, subtract 1 from s;
+		subtract 1 from num;
+		if num == 0, stop iterating.
+	remove d_i from the sequence
+	if all remaining degrees are 0, return true.
+	else, resort the degree list in descending order.
+	(continue with d_i+1)
+	
+b. Sorting the sequence takes at best O(nlogn) time. We have to iterate
+   through the sequence twice (one inside the "outer" loop), and perform the
+   sort each time we iterate, so the complexity is O(n * nlogn) or O((n^2)*logn)
+   
+c. I wrote it out by hand. There is a graph that works for [5 4 3 2 2 2 2].
+
+4.
+a. (given to us in preamble code)
+distance from LAX to  ABQ  is:   676  using path  166 -> 1 
+distance from LAX to  ABV  is:   8035  using path  166 -> 151 -> 171 -> 2 
+distance from LAX to  ACA  is:   1744  using path  166 -> 185 -> 3 
+distance from LAX to  ACC  is:   7579  using path  166 -> 151 -> 4 
+distance from LAX to  ADB  is:   6980  using path  166 -> 296 -> 5 
+distance from LAX to  AER  is:   6936  using path  166 -> 272 -> 6 
+distance from LAX to  AKL  is:   6516  using path  166 -> 7 
+distance from LAX to  ALA  is:   8003  using path  166 -> 272 -> 8 
+distance from LAX to  ALC  is:   6054  using path  166 -> 175 -> 9 
+distance from LAX to  ALP  is:   8130  using path  166 -> 296 -> 39 -> 44 -> 10 
+distance from LAX to  AMA  is:   993  using path  166 -> 165 -> 11 
+distance from LAX to  AMM  is:   7610  using path  166 -> 146 -> 12 
+distance from LAX to  ANC  is:   2374  using path  166 -> 218 -> 13 
+distance from LAX to  ATH  is:   6918  using path  166 -> 198 -> 14 
+distance from LAX to  ATL  is:   1942  using path  166 -> 15 
+distance from LAX to  AUH  is:   8399  using path  166 -> 93 -> 16 
+distance from LAX to  AUS  is:   1239  using path  166 -> 17 
+distance from LAX to  AYT  is:   7158  using path  166 -> 146 -> 18 
+distance from LAX to  BAH  is:   8352  using path  166 -> 272 -> 143 -> 163 -> 19 
+distance from LAX to  BCN  is:   6132  using path  166 -> 175 -> 20 
+distance from LAX to  BDL  is:   2522  using path  166 -> 182 -> 21 
+distance from LAX to  BEY  is:   7472  using path  166 -> 146 -> 22 
+distance from LAX to  BFI  is:   961  using path  166 -> 253 -> 23 
+distance from LAX to  BFS  is:   5341  using path  166 -> 319 -> 114 -> 24 
+distance from LAX to  BGR  is:   2869  using path  166 -> 223 -> 25 
+distance from LAX to  BHM  is:   1821  using path  166 -> 224 -> 26 
+distance from LAX to  BIL  is:   977  using path  166 -> 267 -> 27 
+distance from LAX to  BJV  is:   7084  using path  166 -> 91 -> 28 
+distance from LAX to  BLR  is:   9262  using path  166 -> 219 -> 70 -> 29 
+distance from LAX to  BNA  is:   1794  using path  166 -> 30 
+distance from LAX to  BNE  is:   7167  using path  166 -> 31 
+distance from LAX to  BOG  is:   3516  using path  166 -> 185 -> 32 
+distance from LAX to  BOM  is:   9300  using path  166 -> 219 -> 70 -> 33 
+distance from LAX to  BOS  is:   2606  using path  166 -> 34 
+distance from LAX to  BRI  is:   6522  using path  166 -> 91 -> 35 
+distance from LAX to  BRS  is:   5549  using path  166 -> 319 -> 114 -> 36 
+distance from LAX to  BSB  is:   5805  using path  166 -> 185 -> 32 -> 37 
+distance from LAX to  BSR  is:   8131  using path  166 -> 146 -> 38 
+distance from LAX to  BUD  is:   6233  using path  166 -> 296 -> 39 
+distance from LAX to  BUF  is:   2213  using path  166 -> 214 -> 40 
+distance from LAX to  BWI  is:   2324  using path  166 -> 41 
+distance from LAX to  BWN  is:   8075  using path  166 -> 193 -> 42 
+distance from LAX to  BZE  is:   2344  using path  166 -> 140 -> 43 
+distance from LAX to  CAI  is:   7593  using path  166 -> 296 -> 39 -> 44 
+distance from LAX to  CAN  is:   7220  using path  166 -> 45 
+distance from LAX to  CBR  is:   7642  using path  166 -> 275 -> 46 
+distance from LAX to  CCU  is:   8469  using path  166 -> 219 -> 158 -> 47 
+distance from LAX to  CDG  is:   5656  using path  166 -> 48 
+distance from LAX to  CEB  is:   7478  using path  166 -> 210 -> 49 
+distance from LAX to  CGH  is:   6347  using path  166 -> 185 -> 32 -> 37 -> 50 
+distance from LAX to  CGK  is:   9028  using path  166 -> 193 -> 51 
+distance from LAX to  CGO  is:   6650  using path  166 -> 219 -> 52 
+distance from LAX to  CHC  is:   6980  using path  166 -> 7 -> 53 
+distance from LAX to  CHS  is:   2201  using path  166 -> 15 -> 54 
+distance from LAX to  CJJ  is:   6473  using path  166 -> 210 -> 56 -> 55 
+distance from LAX to  CJU  is:   6244  using path  166 -> 210 -> 56 
+distance from LAX to  CKG  is:   7147  using path  166 -> 219 -> 57 
+distance from LAX to  CLE  is:   2048  using path  166 -> 58 
+distance from LAX to  CLT  is:   2121  using path  166 -> 59 
+distance from LAX to  CMB  is:   9499  using path  166 -> 219 -> 158 -> 60 
+distance from LAX to  CMH  is:   1991  using path  166 -> 61 
+distance from LAX to  CMN  is:   5995  using path  166 -> 315 -> 62 
+distance from LAX to  CNF  is:   6172  using path  166 -> 185 -> 32 -> 37 -> 63 
+distance from LAX to  CNX  is:   8045  using path  166 -> 219 -> 158 -> 64 
+distance from LAX to  CPR  is:   909  using path  166 -> 267 -> 65 
+distance from LAX to  CPT  is:   11173  using path  166 -> 15 -> 152 -> 66 
+distance from LAX to  CRK  is:   7563  using path  166 -> 141 -> 67 
+distance from LAX to  CRP  is:   1578  using path  166 -> 140 -> 68 
+distance from LAX to  CSX  is:   6980  using path  166 -> 141 -> 69 
+distance from LAX to  CTU  is:   7204  using path  166 -> 219 -> 70 
+distance from LAX to  CUN  is:   2117  using path  166 -> 71 
+distance from LAX to  CUZ  is:   4540  using path  166 -> 170 -> 72 
+distance from LAX to  CVG  is:   1896  using path  166 -> 73 
+distance from LAX to  CWL  is:   5544  using path  166 -> 319 -> 114 -> 74 
+distance from LAX to  DAD  is:   7823  using path  166 -> 232 -> 186 -> 75 
+distance from LAX to  DAM  is:   7731  using path  166 -> 146 -> 12 -> 76 
+distance from LAX to  DAY  is:   1943  using path  166 -> 79 -> 77 
+distance from LAX to  DEL  is:   8604  using path  166 -> 219 -> 78 
+distance from LAX to  DEN  is:   861  using path  166 -> 79 
+distance from LAX to  DFW  is:   1232  using path  166 -> 80 
+distance from LAX to  DKR  is:   6260  using path  166 -> 139 -> 81 
+distance from LAX to  DLC  is:   6266  using path  166 -> 316 -> 258 -> 82 
+distance from LAX to  DLH  is:   1630  using path  166 -> 165 -> 83 
+distance from LAX to  DLM  is:   7119  using path  166 -> 296 -> 84 
+distance from LAX to  DME  is:   6107  using path  166 -> 85 
+distance from LAX to  DMM  is:   8311  using path  166 -> 272 -> 143 -> 163 -> 86 
+distance from LAX to  DOH  is:   8301  using path  166 -> 85 -> 87 
+distance from LAX to  DOK  is:   6609  using path  166 -> 272 -> 88 
+distance from LAX to  DPS  is:   8926  using path  166 -> 210 -> 89 
+distance from LAX to  DSM  is:   1449  using path  166 -> 79 -> 90 
+distance from LAX to  DUS  is:   5675  using path  166 -> 91 
+distance from LAX to  DVO  is:   7725  using path  166 -> 210 -> 49 -> 92 
+distance from LAX to  DXB  is:   8327  using path  166 -> 93 
+distance from LAX to  ERI  is:   2146  using path  166 -> 58 -> 94 
+distance from LAX to  ERZ  is:   7489  using path  166 -> 296 -> 96 -> 95 
+distance from LAX to  ESB  is:   7057  using path  166 -> 296 -> 96 
+distance from LAX to  EVN  is:   7202  using path  166 -> 272 -> 97 
+distance from LAX to  EWR  is:   2449  using path  166 -> 98 
+distance from LAX to  EXT  is:   5589  using path  166 -> 319 -> 114 -> 99 
+distance from LAX to  EZE  is:   6136  using path  166 -> 170 -> 100 
+distance from LAX to  FAI  is:   2485  using path  166 -> 253 -> 101 
+distance from LAX to  FCO  is:   6340  using path  166 -> 102 
+distance from LAX to  FLL  is:   2339  using path  166 -> 103 
+distance from LAX to  FLN  is:   6484  using path  166 -> 118 -> 104 
+distance from LAX to  FMO  is:   5943  using path  166 -> 107 -> 105 
+distance from LAX to  FOC  is:   6837  using path  166 -> 255 -> 157 -> 106 
+distance from LAX to  FRA  is:   5792  using path  166 -> 107 
+distance from LAX to  FRU  is:   7919  using path  166 -> 272 -> 108 
+distance from LAX to  FWA  is:   1898  using path  166 -> 214 -> 109 
+distance from LAX to  GCM  is:   2522  using path  166 -> 140 -> 110 
+distance from LAX to  GDL  is:   1308  using path  166 -> 111 
+distance from LAX to  GEG  is:   1043  using path  166 -> 165 -> 112 
+distance from LAX to  GIG  is:   6338  using path  166 -> 185 -> 32 -> 113 
+distance from LAX to  GLA  is:   5231  using path  166 -> 319 -> 114 
+distance from LAX to  GMP  is:   6210  using path  166 -> 132 -> 115 
+distance from LAX to  GPT  is:   1731  using path  166 -> 80 -> 116 
+distance from LAX to  GRB  is:   1785  using path  166 -> 194 -> 117 
+distance from LAX to  GRU  is:   6163  using path  166 -> 118 
+distance from LAX to  GSO  is:   2204  using path  166 -> 59 -> 119 
+distance from LAX to  GSP  is:   2058  using path  166 -> 30 -> 120 
+distance from LAX to  GUM  is:   6349  using path  166 -> 133 -> 121 
+distance from LAX to  GVA  is:   5910  using path  166 -> 48 -> 122 
+distance from LAX to  GYD  is:   7278  using path  166 -> 272 -> 123 
+distance from LAX to  GZT  is:   7384  using path  166 -> 296 -> 96 -> 124 
+distance from LAX to  HAJ  is:   5824  using path  166 -> 91 -> 125 
+distance from LAX to  HAK  is:   7520  using path  166 -> 232 -> 126 
+distance from LAX to  HAN  is:   7649  using path  166 -> 141 -> 127 
+distance from LAX to  HAV  is:   2433  using path  166 -> 71 -> 128 
+distance from LAX to  HER  is:   7105  using path  166 -> 198 -> 129 
+distance from LAX to  HGH  is:   6589  using path  166 -> 141 -> 130 
+distance from LAX to  HKG  is:   7248  using path  166 -> 131 
+distance from LAX to  HND  is:   5476  using path  166 -> 132 
+distance from LAX to  HNL  is:   2553  using path  166 -> 133 
+distance from LAX to  HRB  is:   6363  using path  166 -> 316 -> 258 -> 134 
+distance from LAX to  HRG  is:   7839  using path  166 -> 296 -> 135 
+distance from LAX to  HRK  is:   6484  using path  166 -> 272 -> 136 
+distance from LAX to  HSV  is:   1834  using path  166 -> 80 -> 137 
+distance from LAX to  HYD  is:   9220  using path  166 -> 219 -> 158 -> 47 -> 138 
+distance from LAX to  IAD  is:   2283  using path  166 -> 139 
+distance from LAX to  IAH  is:   1376  using path  166 -> 140 
+distance from LAX to  ICN  is:   5981  using path  166 -> 141 
+distance from LAX to  ICT  is:   1220  using path  166 -> 165 -> 142 
+distance from LAX to  IKA  is:   7624  using path  166 -> 272 -> 143 
+distance from LAX to  IND  is:   1810  using path  166 -> 144 
+distance from LAX to  ISB  is:   8658  using path  166 -> 219 -> 145 
+distance from LAX to  IST  is:   6857  using path  166 -> 146 
+distance from LAX to  ITM  is:   5727  using path  166 -> 210 -> 147 
+distance from LAX to  JAN  is:   1640  using path  166 -> 80 -> 148 
+distance from LAX to  JAX  is:   2149  using path  166 -> 80 -> 149 
+distance from LAX to  JED  is:   8321  using path  166 -> 146 -> 150 
+distance from LAX to  JFK  is:   2470  using path  166 -> 151 
+distance from LAX to  JNB  is:   10383  using path  166 -> 15 -> 152 
+distance from LAX to  KBP  is:   6536  using path  166 -> 272 -> 153 
+distance from LAX to  KEF  is:   4420  using path  166 -> 79 -> 154 
+distance from LAX to  KHH  is:   6948  using path  166 -> 210 -> 155 
+distance from LAX to  KIN  is:   2836  using path  166 -> 140 -> 110 -> 156 
+distance from LAX to  KIX  is:   5739  using path  166 -> 255 -> 157 
+distance from LAX to  KMG  is:   7552  using path  166 -> 219 -> 158 
+distance from LAX to  KRK  is:   6120  using path  166 -> 296 -> 159 
+distance from LAX to  KRT  is:   8524  using path  166 -> 107 -> 160 
+distance from LAX to  KUF  is:   6599  using path  166 -> 272 -> 161 
+distance from LAX to  KUL  is:   8801  using path  166 -> 132 -> 162 
+distance from LAX to  KWI  is:   8091  using path  166 -> 272 -> 143 -> 163 
+distance from LAX to  KWL  is:   7264  using path  166 -> 141 -> 164 
+distance from LAX to  LAS  is:   236  using path  166 -> 165 
+distance from LAX to  LBA  is:   5409  using path  166 -> 319 -> 114 -> 167 
+distance from LAX to  LBB  is:   1009  using path  166 -> 165 -> 168 
+distance from LAX to  LCA  is:   7373  using path  166 -> 296 -> 216 -> 169 
+distance from LAX to  LIM  is:   4176  using path  166 -> 170 
+distance from LAX to  LOS  is:   7717  using path  166 -> 151 -> 171 
+distance from LAX to  LTK  is:   9722  using path  166 -> 85 -> 259 -> 172 
+distance from LAX to  LUX  is:   5793  using path  166 -> 91 -> 173 
+distance from LAX to  MAA  is:   9330  using path  166 -> 219 -> 158 -> 47 -> 174 
+distance from LAX to  MAD  is:   5832  using path  166 -> 175 
+distance from LAX to  MBA  is:   9944  using path  166 -> 102 -> 176 
+distance from LAX to  MBS  is:   1963  using path  166 -> 214 -> 177 
+distance from LAX to  MCI  is:   1361  using path  166 -> 178 
+distance from LAX to  MCO  is:   2214  using path  166 -> 179 
+distance from LAX to  MCT  is:   8543  using path  166 -> 93 -> 180 
+distance from LAX to  MDL  is:   8037  using path  166 -> 219 -> 158 -> 181 
+distance from LAX to  MDW  is:   1747  using path  166 -> 182 
+distance from LAX to  MEL  is:   7928  using path  166 -> 183 
+distance from LAX to  MEM  is:   1615  using path  166 -> 184 
+distance from LAX to  MEX  is:   1554  using path  166 -> 185 
+distance from LAX to  MFM  is:   7274  using path  166 -> 232 -> 186 
+distance from LAX to  MHD  is:   8287  using path  166 -> 272 -> 123 -> 281 -> 187 
+distance from LAX to  MIA  is:   2338  using path  166 -> 188 
+distance from LAX to  MKE  is:   1753  using path  166 -> 189 
+distance from LAX to  MLA  is:   6747  using path  166 -> 48 -> 190 
+distance from LAX to  MLE  is:   9896  using path  166 -> 219 -> 70 -> 191 
+distance from LAX to  MLI  is:   1609  using path  166 -> 165 -> 192 
+distance from LAX to  MNL  is:   7295  using path  166 -> 193 
+distance from LAX to  MSP  is:   1533  using path  166 -> 194 
+distance from LAX to  MSQ  is:   6463  using path  166 -> 272 -> 195 
+distance from LAX to  MSY  is:   1667  using path  166 -> 196 
+distance from LAX to  MTY  is:   1375  using path  166 -> 165 -> 197 
+distance from LAX to  MUC  is:   5975  using path  166 -> 198 
+distance from LAX to  MVD  is:   6233  using path  166 -> 170 -> 199 
+distance from LAX to  MXP  is:   6028  using path  166 -> 48 -> 200 
+distance from LAX to  MYR  is:   2259  using path  166 -> 15 -> 201 
+distance from LAX to  NAP  is:   6458  using path  166 -> 48 -> 202 
+distance from LAX to  NAS  is:   2521  using path  166 -> 103 -> 203 
+distance from LAX to  NBO  is:   9693  using path  166 -> 48 -> 204 
+distance from LAX to  NCE  is:   6088  using path  166 -> 48 -> 205 
+distance from LAX to  NGB  is:   6634  using path  166 -> 210 -> 56 -> 206 
+distance from LAX to  NGO  is:   5651  using path  166 -> 210 -> 207 
+distance from LAX to  NKG  is:   6567  using path  166 -> 141 -> 208 
+distance from LAX to  NNG  is:   7477  using path  166 -> 141 -> 208 -> 209 
+distance from LAX to  NRT  is:   5440  using path  166 -> 210 
+distance from LAX to  OAK  is:   337  using path  166 -> 211 
+distance from LAX to  ODS  is:   6761  using path  166 -> 296 -> 229 -> 212 
+distance from LAX to  ONT  is:   433  using path  166 -> 165 -> 213 
+distance from LAX to  ORD  is:   1741  using path  166 -> 214 
+distance from LAX to  ORF  is:   2378  using path  166 -> 30 -> 215 
+distance from LAX to  OTP  is:   6594  using path  166 -> 296 -> 216 
+distance from LAX to  PBI  is:   2328  using path  166 -> 288 -> 217 
+distance from LAX to  PDX  is:   835  using path  166 -> 218 
+distance from LAX to  PEK  is:   6237  using path  166 -> 219 
+distance from LAX to  PER  is:   9409  using path  166 -> 31 -> 220 
+distance from LAX to  PFO  is:   7346  using path  166 -> 296 -> 39 -> 221 
+distance from LAX to  PHF  is:   2390  using path  166 -> 79 -> 222 
+distance from LAX to  PHL  is:   2396  using path  166 -> 223 
+distance from LAX to  PHX  is:   369  using path  166 -> 224 
+distance from LAX to  PIT  is:   2131  using path  166 -> 225 
+distance from LAX to  PMO  is:   6573  using path  166 -> 48 -> 290 -> 226 
+distance from LAX to  PNH  is:   8203  using path  166 -> 131 -> 227 
+distance from LAX to  POM  is:   8465  using path  166 -> 31 -> 228 
+distance from LAX to  PRG  is:   5966  using path  166 -> 296 -> 229 
+distance from LAX to  PSA  is:   6181  using path  166 -> 48 -> 230 
+distance from LAX to  PUS  is:   6085  using path  166 -> 210 -> 231 
+distance from LAX to  PVG  is:   6472  using path  166 -> 232 
+distance from LAX to  PVR  is:   1219  using path  166 -> 233 
+distance from LAX to  PWM  is:   2637  using path  166 -> 321 -> 234 
+distance from LAX to  RDU  is:   2234  using path  166 -> 235 
+distance from LAX to  REP  is:   8148  using path  166 -> 232 -> 236 
+distance from LAX to  RFD  is:   1687  using path  166 -> 79 -> 237 
+distance from LAX to  RGN  is:   8254  using path  166 -> 219 -> 158 -> 238 
+distance from LAX to  RIC  is:   2308  using path  166 -> 73 -> 239 
+distance from LAX to  RIX  is:   6312  using path  166 -> 296 -> 240 
+distance from LAX to  RNO  is:   391  using path  166 -> 241 
+distance from LAX to  ROC  is:   2268  using path  166 -> 214 -> 242 
+distance from LAX to  RST  is:   1609  using path  166 -> 194 -> 243 
+distance from LAX to  RSW  is:   2236  using path  166 -> 140 -> 244 
+distance from LAX to  RUH  is:   8367  using path  166 -> 146 -> 245 
+distance from LAX to  SAN  is:   109  using path  166 -> 246 
+distance from LAX to  SAT  is:   1208  using path  166 -> 247 
+distance from LAX to  SAV  is:   2156  using path  166 -> 80 -> 248 
+distance from LAX to  SAW  is:   6893  using path  166 -> 296 -> 249 
+distance from LAX to  SCL  is:   5653  using path  166 -> 185 -> 250 
+distance from LAX to  SDF  is:   1843  using path  166 -> 270 -> 251 
+distance from LAX to  SDQ  is:   3187  using path  166 -> 188 -> 252 
+distance from LAX to  SEA  is:   955  using path  166 -> 253 
+distance from LAX to  SFB  is:   2485  using path  166 -> 30 -> 120 -> 254 
+distance from LAX to  SFO  is:   338  using path  166 -> 255 
+distance from LAX to  SGN  is:   8159  using path  166 -> 289 -> 256 
+distance from LAX to  SHA  is:   6580  using path  166 -> 132 -> 257 
+distance from LAX to  SHE  is:   6055  using path  166 -> 316 -> 258 
+distance from LAX to  SHJ  is:   8368  using path  166 -> 85 -> 259 
+distance from LAX to  SIN  is:   8763  using path  166 -> 260 
+distance from LAX to  SIP  is:   6833  using path  166 -> 272 -> 261 
+distance from LAX to  SJC  is:   308  using path  166 -> 262 
+distance from LAX to  SJD  is:   912  using path  166 -> 263 
+distance from LAX to  SJJ  is:   6418  using path  166 -> 198 -> 264 
+distance from LAX to  SJU  is:   3382  using path  166 -> 140 -> 265 
+distance from LAX to  SKG  is:   6743  using path  166 -> 296 -> 302 -> 266 
+distance from LAX to  SLC  is:   590  using path  166 -> 267 
+distance from LAX to  SMF  is:   373  using path  166 -> 268 
+distance from LAX to  SRQ  is:   2388  using path  166 -> 15 -> 269 
+distance from LAX to  STL  is:   1589  using path  166 -> 270 
+distance from LAX to  SUB  is:   8940  using path  166 -> 193 -> 42 -> 271 
+distance from LAX to  SVO  is:   6063  using path  166 -> 272 
+distance from LAX to  SXF  is:   5930  using path  166 -> 79 -> 154 -> 273 
+distance from LAX to  SXM  is:   3561  using path  166 -> 188 -> 274 
+distance from LAX to  SYD  is:   7495  using path  166 -> 275 
+distance from LAX to  SYR  is:   2346  using path  166 -> 214 -> 276 
+distance from LAX to  SYX  is:   7650  using path  166 -> 232 -> 277 
+distance from LAX to  SYZ  is:   8234  using path  166 -> 272 -> 123 -> 281 -> 278 
+distance from LAX to  SZX  is:   7238  using path  166 -> 232 -> 279 
+distance from LAX to  TBS  is:   7108  using path  166 -> 85 -> 280 
+distance from LAX to  TBZ  is:   7538  using path  166 -> 272 -> 123 -> 281 
+distance from LAX to  THR  is:   7865  using path  166 -> 272 -> 123 -> 281 -> 282 
+distance from LAX to  TIA  is:   6592  using path  166 -> 198 -> 283 
+distance from LAX to  TIJ  is:   1697  using path  166 -> 263 -> 284 
+distance from LAX to  TIP  is:   6915  using path  166 -> 48 -> 294 -> 285 
+distance from LAX to  TLS  is:   6028  using path  166 -> 315 -> 286 
+distance from LAX to  TLV  is:   7560  using path  166 -> 287 
+distance from LAX to  TPA  is:   2154  using path  166 -> 288 
+distance from LAX to  TPE  is:   6787  using path  166 -> 289 
+distance from LAX to  TRN  is:   6012  using path  166 -> 48 -> 290 
+distance from LAX to  TSE  is:   7488  using path  166 -> 272 -> 291 
+distance from LAX to  TSN  is:   6488  using path  166 -> 141 -> 292 
+distance from LAX to  TUL  is:   1280  using path  166 -> 293 
+distance from LAX to  TUN  is:   6581  using path  166 -> 48 -> 294 
+distance from LAX to  TUS  is:   450  using path  166 -> 295 
+distance from LAX to  TXL  is:   5791  using path  166 -> 296 
+distance from LAX to  TZX  is:   7418  using path  166 -> 296 -> 96 -> 297 
+distance from LAX to  UFA  is:   6794  using path  166 -> 272 -> 298 
+distance from LAX to  UPG  is:   9320  using path  166 -> 210 -> 89 -> 299 
+distance from LAX to  VCE  is:   6150  using path  166 -> 91 -> 300 
+distance from LAX to  VDA  is:   7802  using path  166 -> 48 -> 301 
+distance from LAX to  VIE  is:   6131  using path  166 -> 296 -> 302 
+distance from LAX to  VNO  is:   6478  using path  166 -> 296 -> 240 -> 303 
+distance from LAX to  VRA  is:   2492  using path  166 -> 71 -> 304 
+distance from LAX to  VRN  is:   6120  using path  166 -> 48 -> 305 
+distance from LAX to  WLG  is:   6815  using path  166 -> 7 -> 306 
+distance from LAX to  WNZ  is:   6703  using path  166 -> 232 -> 307 
+distance from LAX to  WUH  is:   6819  using path  166 -> 141 -> 308 
+distance from LAX to  XIY  is:   6817  using path  166 -> 219 -> 309 
+distance from LAX to  XMN  is:   6973  using path  166 -> 255 -> 157 -> 106 -> 310 
+distance from LAX to  YEG  is:   1359  using path  166 -> 311 
+distance from LAX to  YHZ  is:   2968  using path  166 -> 315 -> 312 
+distance from LAX to  YOW  is:   2394  using path  166 -> 214 -> 313 
+distance from LAX to  YQB  is:   2613  using path  166 -> 315 -> 314 
+distance from LAX to  YUL  is:   2469  using path  166 -> 315 
+distance from LAX to  YVR  is:   1082  using path  166 -> 316 
+distance from LAX to  YWG  is:   1546  using path  166 -> 165 -> 317 
+distance from LAX to  YXU  is:   2093  using path  166 -> 214 -> 318 
+distance from LAX to  YYC  is:   1207  using path  166 -> 319 
+distance from LAX to  YYJ  is:   1053  using path  166 -> 253 -> 320 
+distance from LAX to  YYZ  is:   2171  using path  166 -> 321 
+
+b. Given s as the starting node, v as the node to find, and N as the set of all nodes:
+Each node has a distance associated with it, initialized to infinity (except s is initialized to 0)
+Each node has a number of nodes P associated with it, initialized to empty (the node that pointed to it)
+Starting at s node and continuing until reaching v:
+	for each node connected to the current node:
+		calculate d' = current node's distance + edge weight
+		if d' < the connected node's distance value:
+			set it to d'
+			delete all Ps associated with the connected node
+			write the current node as the only P 
+		
+		if d == the connected node's distance value, add P to the current node
+		
+		remove the current node from N
+	continue with the node in N with the smallest distance value
+	
+This should populate the graph with P values representing the sportest path, and will keep track of
+duplicates as well.
+
+c.
+Use the above algorithm to populate the graph's P values.
+Then do a DFS, running through each possible path to get back to the starting node, using
+the P nodes as a sort of tree. Record each time the path "branches" -- that is, a node has multiple
+P values, indicating multiple shortest paths. At the end, there should be (N+1) total paths
+if N is the number of branches.
+
+The time complexity should be O(#edges + #nodes) since it is a depth first search.
+	
+d. 
+Initialize G, an N x N matrix where N is the number of nodes, to all infinity.
+Initialize L, the number of shortest paths going through each node, to 0 on every node.
+For each node i:
+	For each node j:
+		if i==j, set G[i][j] to 0
+		else, run the shortest path algorithm from part b
+		Then using a depth first search, run the algorithm from part c, except for each
+			node in the shortest path, increment L by 1 (keeping track of the # of shortest paths)
+			
+This should populate each node with an L value indicating the number of shortest paths going through.
+
+e. Run the algorithm from part d, and take the maximum L value -- this is the bottleneck node.
+The time complexity should be O(n^3), as we are using the Floyd-Warshall algorithm which has 
+been extensively studied to be O(n^3).
+
+f. (This isn't right, but its' close...)
+
+btw<-betweenness(G, Edges, directed=FALSE)
+cat(btw)
+which.max(btw) #gets the index of the maximum
+
+The output it returns is PEK 3879.
+

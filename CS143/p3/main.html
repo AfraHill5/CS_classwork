@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<title>Main Page</title>
+
+
+<!-- form tag for login-->
+<form method=get action=servlet/User>
+
+<h2>Login</h2>
+
+<!-- email -->
+<p>Email address: <input type=text name="email" size=40>
+
+<!-- password -->
+<p>Password: <input type=text name="password" size=40>
+
+<!-- submit button -->
+<p> <input type=submit name="sub" value="Login">
+
+</form>
+
+
+<!-- form tag for creating account -->
+
+<form method=get action=servlet/Account>
+<h2>Create an Account </h2>
+
+<!-- new email -->
+<p>Email address: <input type=text name="email" size=40>
+
+<!-- last name -->
+<p>Last name: <input type=text name="last_name" size=40>
+
+<!-- submit button -->
+<p> <input type=submit name="sub" value="Create account">
+
+<!-- OPID  -->
+<input type="hidden" name="OPID" value="1">
+</form>
+
+<!-- form tag to reset all in the DB (testing) -->
+<form method=get action=servlet/Account>
+<h3>Reset users in the database (debugging purposes)</h3>
+<p><input type=submit name="reset" value="RESET">
+<!-- OPID -->
+<input type="hidden" name="OPID" value="66">
+</form>
+
+
+</body>
+</html>
+

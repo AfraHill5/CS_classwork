@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<title>Create New Paper</title>
+
+
+<!-- form tag for login-->
+<form method=get action=servlet/AuthOps>
+
+<h2>Create a new Paper</h2>
+
+<!-- paper name -->
+<p>Title: <input type=text name="title" size=40></p>
+<!-- abstract -->
+<p>Abstract: <input type=text name="abstract" size=40></p>
+<!-- content -->
+<p>Content: <input type=text name="content" size=40></p>
+<!-- conference -->
+<p>Conference id: <input type=text name="conf" size=40></p>
+
+<!-- OPID  -->
+<input type="hidden" name="OPID" value="1">
+
+<!-- pid (just to make the generated html look pretty -->
+<input type="hidden" name="pid" value="New">
+
+<!-- submit button -->
+<p> <input type=submit name="sub" value="Submit">
+
+</form>
+
+</body>
+</html>
+

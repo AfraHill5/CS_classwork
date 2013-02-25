@@ -1,0 +1,166 @@
+Zach North
+603 885 768
+Homework 5
+
+1.a.
+		  50
+	20		    60
+   10	      40		70
+	   30    45	     65    80
+         25  35		          75
+
+b.
+		  50
+	10		    60
+   	      40		70
+	   25    45	     65    80
+             35		          75
+Using left subtree substitution for deletion.
+
+c.
+in-order:
+10
+20
+25
+30
+35
+40
+45
+50
+60
+65
+70
+75
+80
+
+pre-order:
+50
+20
+10
+40
+30
+25
+35
+45
+60
+70
+65
+80
+75
+
+post-order:
+10
+25
+35
+30
+45
+40
+20
+65
+75
+80
+70
+60
+50
+
+2.a
+		6
+	3		5
+      1   2	      4	        
+
+b.
+array index:
+0  1  2  3  4  5  
+
+6  3  5  1  2  4
+
+c.
+		5
+	3		4
+      1   2
+	      	 
+array index:
+0  1  2  3  4
+
+5  3  4  1  2
+
+3.a.
+struct Node
+{
+	int val;
+	Node* leftChild;
+	Node* rightChild;
+	Node* parent;
+}
+
+b.
+void insertNode(Node& toBeInserted)
+{
+	Node* current = headOfBinaryTree;
+	Node* previous = NULL;
+	while the current pointer is not null:
+		set the previous pointer to the current pointer;
+		if the value of the node to be inserted is greater than the value of current:
+			set current to the right pointer in the node pointed by current;
+		else:
+			set current to the left pointer;
+	set the left and right pointers in toBeInserted to NULL;
+	set the parent pointer in the toBeInserted node to previous;
+	if the value of toBeInserted is greater than the value of previous:
+		set the left pointer of the node pointed by previous to toBeInserted;
+	else:
+		set the right pointer to previous;
+}
+
+4.a.
+matrix:
+
+f
+r
+m		to
+x A  B  C  D  E  F  G  H  I
+A 0  1  1  0  0  0  0  0  0  
+B 0  0  0  0  0  0  0  1  0
+C 0  0  0  1  1  0  0  0  0
+D 0  1  0  0  0  0  0  1  0
+E 0  0  0  0  0  0  1  0  0
+F 0  0  0  0  0  0  1  0  1
+G 0  0  1  0  0  0  0  1  0
+H 0  0  0  0  0  0  1  0  0
+I 0  0  1  0  0  0  0  0  0
+
+table:
+
+from   	|   to
+-----------------
+A	| B,C
+B	| H
+C 	| D,E
+D	| B,H
+E	| G
+F	| G,I
+G	| C,H
+H	| G
+I	| C
+
+b.
+
+1.
+E
+G
+H
+
+2.
+E
+G
+C
+D
+H
+
+3.
+E
+G
+C
+D
+B
+H 	

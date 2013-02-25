@@ -1,0 +1,26 @@
+//Notes 1/31/2011
+
+class Shape
+{
+  public:
+	virtual void move(-,-);
+	virtual void draw() const = 0;
+   ...
+}
+
+class Circle : public Shape
+{
+...
+}
+
+ 
+
+void f(Shape& s)
+{
+	s.move(10,20);
+	s.draw();
+}
+
+Circle c;
+f(c;)
+	

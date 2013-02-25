@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<title>Search Page</title>
+
+<h1>Search Page</h1>
+
+<!-- form tag -->
+<form method=get action=servlet/ops>
+
+<!-- type input (Author or Paper) -->
+<p>Select search type:
+<SELECT NAME="search_type">
+<OPTION SELECTED>Author
+<OPTION>Title
+</SELECT>
+
+<!-- text input -->
+<p>Search keyword: <input type=text name="keyword" size=40>
+
+<!-- submit button -->
+<p> <input type=submit name="sub" value="submit">
+
+<!-- OPID -->
+<input type="hidden" name="OPID" value="5">
+</form>
+
+<p><a href="./main.html">Back to main page</a></p>
+
+</body>
+</html>

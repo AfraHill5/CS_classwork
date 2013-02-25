@@ -1,0 +1,75 @@
+﻿Build started 2/25/2013 1:12:15 AM.
+     1>Project "E:\Documents\UCLA\CS174\template4\anim.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating ".\anim___Win32_Debug\anim.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         e:\HDD Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /IE:\Documents\UCLA\CS174\template4\ /IE:\Documents\UCLA\CS174\template4\\Angel /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0710 /D _MBCS /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\anim___Win32_Debug/" /Fd".\anim___Win32_Debug/vc100.pdb" /Gd /TP /analyze- /errorReport:prompt anim.cpp
+         anim.cpp
+     1>e:\documents\ucla\cs174\template4\angel\angel.h(63): warning C4305: 'initializing' : truncation from 'double' to 'const GLfloat'
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(698): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(699): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(700): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(721): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(723): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(726): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\angel\mat.h(743): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(273): warning C4305: 'argument' : truncation from 'double' to 'GLclampf'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(273): warning C4305: 'argument' : truncation from 'double' to 'GLclampf'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(488): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(492): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(494): warning C4305: 'argument' : truncation from 'double' to 'const GLfloat'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(498): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(545): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(554): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(576): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(591): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(595): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(668): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(724): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(732): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(733): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(744): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(755): warning C4244: 'argument' : conversion from 'double' to 'const GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(759): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(759): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(764): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(764): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(764): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(781): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(796): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(799): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(842): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(844): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(887): warning C4305: '=' : truncation from 'double' to 'GLfloat'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(898): warning C4305: '=' : truncation from 'double' to 'GLfloat'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(899): warning C4305: '=' : truncation from 'double' to 'GLfloat'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(900): warning C4305: '=' : truncation from 'double' to 'GLfloat'
+     1>e:\documents\ucla\cs174\template4\anim.cpp(1033): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(1034): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(1061): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(1062): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(1070): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(1072): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>e:\documents\ucla\cs174\template4\anim.cpp(600): warning C4715: 'Robot::getEyeScalar' : not all control paths return a value
+       Link:
+         e:\HDD Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\anim___Win32_Debug\anim.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:E:\Documents\UCLA\CS174\template4\\GL glew32.lib odbc32.lib odbccp32.lib opengl32.lib glu32.lib freeglut.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:".\anim___Win32_Debug\anim.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:".\anim___Win32_Debug/anim.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\anim___Win32_Debug\anim.lib" /MACHINE:X86 .\anim___Win32_Debug/InitShader.obj
+         .\anim___Win32_Debug/anim.obj
+         .\anim___Win32_Debug/Ball.obj
+         .\anim___Win32_Debug/BallAux.obj
+         .\anim___Win32_Debug/BallMath.obj
+         .\anim___Win32_Debug/FrameSaver.obj
+         .\anim___Win32_Debug/Shapes.obj
+         .\anim___Win32_Debug/tga.obj
+         .\anim___Win32_Debug/Timer.obj /MACHINE:I386 
+     1>InitShader.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+         anim.vcxproj -> E:\Documents\UCLA\CS174\template4\.\anim___Win32_Debug\anim.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:".\anim___Win32_Debug\anim.exe;#1" /manifest .\anim___Win32_Debug\anim.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file ".\anim___Win32_Debug\anim.unsuccessfulbuild".
+         Touching ".\anim___Win32_Debug\anim.lastbuildstate".
+     1>Done Building Project "E:\Documents\UCLA\CS174\template4\anim.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.92

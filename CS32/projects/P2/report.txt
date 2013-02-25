@@ -1,0 +1,465 @@
+Zach North
+603 885 768
+1/24/2011
+-----------------
+Project 2 Report |
+-----------------
+
+My list implementation utilizes doubly-linked nodes, as specified, with a head pointer pointing to the first
+element and a tail pointer pointing to the last element. Each node in the list has 4 elements:
+
+--Itemtype& m_item, the name of the item
+--int m_count, the number of instances of the item
+--Node* m_next, a pointer to the next node in the list
+--Node* m_prev, a pointer to the previous node in the list.
+
+Note that the first node in the list does not point back to the m_head pointer, and the last element in the array does not point forward to
+the m_tail pointer. These two nodes have NULL values for their m_prev/m_next pointers, respectively, to represent the end of the list.
+
+           _______               _______             _______
+          |  NODE |             |  NODE |           |  NODE |
+          |-------|             |-------|           |-------|
+          |m_item |             |m_item |           |m_item |
+          |m_count|             |m_count|           |m_count|
+          |m_next |  ---->      |m_next |  ---->    |m_next | ----> NULL
+ NULL<----|m_prev |  <----      |m_prev |  <----    |m_prev |
+           -------               -------             -------
+              ^                                          ^
+              |                                          |
+              |                                          |
+            m_head                                     m_tail
+
+-----------
+Psuedocode |
+-----------
+
+
+//BAG FUNCTIONS
+
+Bag::Bag() //the constructor
+
+sets both m_head and m_tail to NULL.
+
+
+
+
+
+
+
+Bag::~Bag() //the destructor
+
+resets m_head to the first value;
+if m_head is not NULL
+{
+   while the Node pointed by m_head still has at least one Node following it in the list
+   {
+      m_head points to the next Node;
+      deallocate the previous Node;
+   }
+   delete m_head;
+}
+
+
+
+
+
+Bag::Bag(const Bag& a) //the copy constructor
+
+creates a new Node pointer called current that points to a's head;
+creates a new Node pointer called prev that points to NULL;
+loops through a's list, incrementing the current and prev pointers until current is NULL and prev points to the final value
+{
+   inserts the current item into the Bag a number of times equal to the item's count value in a
+   if a previous value exists
+   {
+      the current node's m_prev value points to the previous node;
+      the previous node's m_next pointer points to the current node;
+   }
+   else //a previous value does not exist
+   {
+      the current node's m_prev value points to NULL;
+      m_head points to the current node;
+   }
+   m_tail points to the current node;
+}
+
+
+
+
+
+
+Bag& Bag::operator=(const Bag& a)
+
+if the m_head pointer is the same as a's m_head pointer, none of the following executes as it is already the same;
+if m_head is not NULL
+{
+   while m_head does not point to the final node in the list
+   {
+      m_head points to the next value;
+      delete the previous value to m_head;
+   }
+   when the loop finishes, delete m_head (the final node);
+   set both m_head and m_tail to NUll;
+
+   //now we have cleared the left side of the equals sign.
+
+   create a node pointer called current that points to a's m_head;
+   create a node pointer called prev that points to NULL;
+   loops through a's list using current, ending when current is NULL and prev points to the final node
+   {
+      insert the current item from a's node into the Bag;
+      initialize an int called itemCount equal to the number of items in the current node of a;
+      steps through the bag to find the inserted item, and changes the value of the node's m_count to itemCount;
+   }
+returns a pointer to the completed bag;
+
+
+
+
+
+
+
+bool Bag::empty()
+returns true if m_head points to any Node, and false if it is NULL;
+
+
+
+
+
+
+int Bag::size()
+
+steps through the current bag and adds each node's m_count value;
+returns the value added;
+
+
+
+
+
+int Bag::uniqueSize()
+
+steps through the current bag and adds 1 for each node;
+returns the number of nodes;
+
+
+
+
+
+bool Bag::insert(const Itemtype& value)
+
+if m_head is not NULL
+{
+   steps through the list looking for value;
+
+   if value matches the value of one node's m_item
+      increment that node's m_count by 1 and return true;
+   else, if no match is found
+   {
+      creates a new Node and sets the m_item to value and the m_count to 1
+      the previous Node's m_next pointer is set to the new Node;
+      the new Node's m_prev pointer is set to the previous Node, and the m_next pointer to NULL;
+      m_tail points to the new Node;
+      returns true;
+   }
+
+else, if m_head is NULL there are no objects in the list
+{
+   creates a new Node and sets the m_item to value and the m_count to 1;
+   sets the m_prev and m_next pointers to NULL;
+   sets the m_head and m_tail pointers to the new Node;
+   returns true;
+}
+
+
+
+
+
+
+int Bag::erase(const Itemtype& value)
+
+steps through the list until it finds value as a value of m_item in some node
+if the count of the node is 1
+{
+   if both m_head and m_tail point to this Node
+      set them both to NULL //this is the last Node;
+   if this Node has other nodes on both sides
+      make these 2 neighboring nodes point to each other instead (over the top of this Node);
+   creates 2 Node pointers to track the neighboring nodes;
+   deletes this node;
+   if there is not a node that follows in the list
+      if there IS a node that precedes in the list
+         set the tail to the preceding node, and sets the preceding node's m_next pointer to NULL;
+      else, if there is not a following node
+         set m_tail to NULL;
+   else if there is not a node that precedes in the list
+      if there IS a node that follows in the list
+         set m_head to the next node, and set the next node's m_prev pointer to NULL;
+      else set m_head to NULL;
+   returns the number of values deleted (1);
+}
+if the count of the node is >1
+   decrement the count by 1 and return 1;
+
+if the node is not found anywhere
+   return 0;
+
+
+
+
+
+
+int Bag::eraseAll (const ItemType& value)
+
+this function is identical to Bag::erase, except it erases the node every time and returns the m_count instead of 1 or 0.
+
+
+
+
+
+bool Bag::contains(const ItemType& value)
+
+tracks through the list looking for a node with m_item matching value;
+if it finds it, returns 1; else returns 0;
+
+
+
+
+
+int Bag::count(const ItemType& value)
+
+tracks through the list looking for a node with m_item matching value;
+if it finds it, returns this node's m_count; else returns 0;
+
+
+
+
+
+void Bag::swap(Bag& other)
+
+swaps the head and tail pointers of the two bags being swapped, without adjusting any of the list items;
+
+
+
+
+
+
+//BAG ITERATION FUNCTIONS
+
+
+
+start()
+tracks back through the list by following m_prev pointers until reaching a NULL;
+sets m_head to point to the node with m_prev = NULL (the first item in the list)
+
+
+
+
+
+
+
+next()
+sets m_head to the value pointed by m_next of its current pointed node;
+
+
+
+
+
+
+
+ended()
+
+returns false if m_head does not point to NULL, returns true if it does;
+
+
+
+
+
+
+
+currentValue()
+
+returns the m_item value of the node pointed by m_head;
+
+
+
+
+
+
+
+
+currentCount()
+
+returns the m_count value of the node pointed by m_head;
+
+
+
+
+
+
+//PUBLIC FUNCTIONS
+
+
+void combine(Bag& b1, Bag& b2, Bag& result)
+
+first erases all Nodes in the result bag;
+steps through b1
+   inserts each value from the nodes in b1 into result a number of times equal to the node's m_count value;
+resets the b1 head pointer;
+
+steps through b2
+   inserts each value from the nodes in b1 into result a number of times equal to the node's m_count value;
+resets the b2 head pointer;
+
+
+
+
+
+
+
+void subtract(Bag& b1, Bag& b2, Bag& result)
+
+first erases all Nodes in the result bag;
+steps through b1
+   inserts each value from the nodes in b1 into result a number of times equal to the node's m_count value;
+resets the b1 head pointer;
+
+steps through b2
+{
+   if the current m_item of the pointed Node in b2 matches one in b1
+   {
+      erases that item from result a number of times equal to the m_count in the node
+      if this is greater than the number of times it appears in result, erases it completely
+   }
+}
+resets the b2 head pointer;
+
+
+
+
+
+
+-----------
+Test Cases |
+-----------
+
+int main()
+{
+	Bag b;                           //constructor test
+	assert (b.empty() == 1);         //empty bag
+	assert (b.size() == 0);          //no items
+	assert (b.uniqueSize() == 0);    //no items
+
+	b.insert(12);                   //testing the insert function
+	b.insert(24);
+	b.insert(24);                   //duplicates
+	b.insert(36);
+	b.insert(12);                   //duplicates
+	b.insert(12);
+	b.insert(24);
+
+	assert (b.size() == 7);           //7 items have been inserted
+	assert (b.uniqueSize() == 3);     //3 different items
+
+	b.erase(24);                     //erases one duplicate of 24
+	b.eraseAll(12);                  //erases all duplicates of 12
+
+	assert (b.size() == 3);           //4 items have been erased
+	assert (b.uniqueSize() == 2);     //2 different items left
+	assert (b.contains(24) == 1);     //it does contain this
+	assert (b.contains(25) == 0);     //does not contain this
+	assert (b.count(36) == 1);        //1 instance
+	assert (b.count(24) == 2);        //2 instances
+	assert (b.count(99) == 0);        //0 instances
+
+	Bag c;
+
+	c.insert(12);                    //checking the insert function again
+	c.insert(14);
+	c.insert(4);
+	c.insert(1);
+	c.insert(12);
+	c.insert(2);
+	c.insert(1);
+
+	assert (c.size() == 7);           //7 items
+	assert (c.uniqueSize() == 5);
+	assert (c.contains(14) == 1);     //contains 14
+	assert (c.contains(25) == 0);     //does not contain 25
+	assert (c.count(1) == 2);         //2 instances of item 1
+	assert (c.count(14) == 1);        //1 instance of item 14
+	assert (c.count(999) == 0);       //0 instances of item 999
+	
+
+
+
+	Bag d, e;
+
+	d.insert(1);
+	d.insert(2);
+	d.insert(2);
+	d.insert(3);
+	d.insert(3);
+	d.insert(3);
+
+	e.insert(4);
+	e.insert(5);
+	e.insert(5);
+	e.insert(6);
+	e.insert(6);
+	e.insert(6);
+
+	//d = 1, 2, 2, 3, 3, 3
+	//e = 4, 5, 5, 6, 6, 6
+
+
+	Bag result;
+	result.insert(9);             //testing that the combine function correctly deletes other 
+	result.insert(99);            //values in the result bag 
+
+	combine(d,e,result);
+
+	assert(result.size() == 12);   //checks that all values have been copied
+	assert(result.contains(1) == 1 && result.contains(2) == 1 && result.contains(3) == 1);   //checks that the first bag was copied
+	assert(result.contains(4) == 1 && result.contains(5) == 1 && result.contains(6) == 1);    //checks that the second bag was copied
+	assert(result.contains(9) == 0 && result.contains(99) == 0);                             //checks that the original values are erased
+
+
+	b = c;
+	assert(b.contains(14) == 1 && b.contains(12) == 1 && b.contains(2) == 1 && b.contains(24) == 0); //checks that the copy constructor successfully copied the right side to the left
+	assert(c.contains(14) == 1 && c.contains(12) == 1 && c.contains(2) == 1 && c.contains(24) == 0); //checks that the right side is unchanged
+
+
+	d.swap(e);
+	assert(d.contains(4) == 1 && d.contains(5) == 1 && d.contains(6) == 1 && d.contains(1) == 0); //checks that the swap function correctly swaps bags
+	assert(e.contains(1) == 1 && e.contains(2) == 1 && e.contains(3) == 1 && e.contains(4) == 0);
+
+	Bag f, g;
+	f.insert(1);
+	f.insert(1);
+	f.insert(2);
+	f.insert(2);
+	f.insert(3);
+	//f = 1, 1, 2, 2, 3
+
+	g.insert(1);
+	g.insert(2);
+	g.insert(3);
+	g.insert(4);
+	g.insert(5);
+	//g = 1, 2, 3, 4, 5
+
+	subtract(f,g,result);
+
+	   //result should be f-g or 1, 2
+	assert(result.contains(1) == 1 && result.contains(2) == 1 && 
+		result.contains(3) == 0 && result.contains(4) == 0 && result.size() == 2);          //checks that the subtract function works, and that the original values in result were erased
+}
+
+
+If this program successfully compiles and runs, it would indicate that all the functions work as described in the spec.
+ 
+
+
+
+
+   

@@ -1,0 +1,106 @@
+Zach North
+603885768
+HW5
+
+7.7
+/* foo5.c */
+#include <stdio.h>
+void f(void);
+
+int x = 15213;
+int y = 15212;
+
+int main()
+{
+	f();
+	printf("x = 0x%x y = 0x%x \n", x, y);
+	return 0;
+}
+
+/* bar5.c */
+int x;
+
+void f()
+{
+	x = 15213;
+}
+
+8.17
+
+Hello
+0 if child, 1 if parent
+0 if child, 1 if parent
+0-255 (one of the 256 exit statuses, always printed after the child)
+Bye
+Bye
+
+ex: 
+Hello		Hello		Hello
+1			0			0
+0			100			102
+101			1			1
+Bye			Bye			Bye
+Bye			Bye			Bye
+
+8.21
+abc
+bac
+(either of the paths can be taken first, it's unknown)
+
+8.23
+The bug is in the coworkers logic. You cannot use signals to count the occurence
+of events in other processes, because they do not queue when multiple instances
+of the same signal are sent to a handler. They are simply discarded. Thus, when 
+the child processes are killed and SIGUSR2 is sent to the parent, most of the
+signals are lost because they are sent at the same time the parent is processing
+the first couple signals.
+
+9.11
+virtual address: 0x027c
+  TLBT        TLBI 
+0 0 0 0 1 0 / 0 1  |  1 1 1 1 0 0 
+     VPN		        VPO
+VPN = 0x09
+VPO = 0x3c
+TLBTag = 0x02
+TLBIndex = 0x01
+TLB Hit? N
+Page fault? N
+PPN = 0x17
+physical address:
+0 0 1 0 1 1  |  1 1 1 1  | 0 0 
+   CT			  CI 		CO
+Byte offset = 0x0
+Cache index = 0xf
+Cache tag = 0x0b
+Cache hit? N
+Cache byte returned: --
+
+9.15
+				Block Size			Block Header
+malloc(3)		8					0x9					
+malloc(11)		16					0x11
+malloc(20)		24					0x19
+malloc(21)		24					0x19
+
+9.16
+Alignment			Allocated Block			Free Block			Min Block Size
+single word			header + footer			header + footer		16
+single word			header, no footer		header + footer		16
+double word			header + footer			header + footer		24
+double word			header, no footer		header + footer		16
+
+10.7
+#include "csapp.h"
+
+int main(int argc, char **argv)
+{
+	int m;
+	rio_t rio;
+	char buf[MAXBUF];
+	
+	Rio_readinitb(&rio, STDIN_FILENO);
+	while ((n = Rio_readlineb(&rio, buf, MAXBUF)) != 0)
+		Rio_writen(STDOUT_FILENO, buf, n);
+}
+

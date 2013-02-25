@@ -1,0 +1,21 @@
+﻿Build started 2/3/2011 9:45:39 PM.
+     1>Project "C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\hw3.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\hw3.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt tree.cpp
+         tree.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\Debug\hw3.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\hw3.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\Debug\hw3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\Debug\hw3.lib" /MACHINE:X86 Debug\tree.obj
+         LINK : C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\Debug\hw3.exe not found or not built by the last incremental link; performing full link
+         hw3.vcxproj -> C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\Debug\hw3.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\Debug\hw3.exe;#1" /manifest Debug\hw3.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\hw3.unsuccessfulbuild".
+         Touching "Debug\hw3.lastbuildstate".
+     1>Done Building Project "C:\Users\Zach\Documents\UCLA\CS32\hw3\hw3\hw3.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.15

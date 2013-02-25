@@ -1,0 +1,16 @@
+﻿Build started 10/3/2010 10:15:34 PM.
+     1>Project "C:\Users\Zach\Documents\UCLA\CS31\projects\Project1\project1\project1.vcxproj" on node 2 (ClCompile target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt compile_error.cpp
+         compile_error.cpp
+     1>c:\users\zach\documents\ucla\cs31\projects\project1\project1\compile_error.cpp(20): error C2065: 'doble' : undeclared identifier
+     1>c:\users\zach\documents\ucla\cs31\projects\project1\project1\compile_error.cpp(20): error C2146: syntax error : missing ';' before identifier 'pctJerry'
+     1>c:\users\zach\documents\ucla\cs31\projects\project1\project1\compile_error.cpp(20): error C2065: 'pctJerry' : undeclared identifier
+     1>c:\users\zach\documents\ucla\cs31\projects\project1\project1\compile_error.cpp(21): error C2065: 'numberSureyed' : undeclared identifier
+     1>c:\users\zach\documents\ucla\cs31\projects\project1\project1\compile_error.cpp(27): error C2065: 'pctJerry' : undeclared identifier
+     1>c:\users\zach\documents\ucla\cs31\projects\project1\project1\compile_error.cpp(28): error C2065: 'cot' : undeclared identifier
+     1>Done Building Project "C:\Users\Zach\Documents\UCLA\CS31\projects\Project1\project1\project1.vcxproj" (ClCompile target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.68

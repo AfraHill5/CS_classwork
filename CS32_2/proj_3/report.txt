@@ -1,0 +1,348 @@
+Zach North
+603885768
+Project 3
+
+1. High Level Descriptions
+
+All destructors do nothing unless otherwise indicated.
+
+class StudentWorld: public GameWorld
+{
+public:
+	StudentWorld();
+	virtual ~StudentWorld();
+	/* constructors and destructors. The constructor just sets m_counter
+	 * to 0, while the destructor calls cleanUp().
+	 */
+
+	virtual void init();
+	/* Initializes the class by constructing mushrooms and a player object,
+	 * called when the class is first created by the program. It is virtual
+ 	 * because it is a redefinition of the GameWorld version.
+	 */
+ 	
+
+	virtual int move();
+	/* This function is called each tick to move every Actor in the world
+	 * and returns whether the player died or not. It tells each actor
+	 * in succession to doSomething() and then returns whether the player
+	 * is alive.
+	 */
+
+	virtual void cleanUp(); 
+	/* This is called whenever the player dies. It destroys every Actor
+	 * object and the Player class associated with the world. Again, it is
+	 * virtual because the GameWorld class defines a skeleton version that
+	 * we need to redefine to make the program work.
+	 */
+
+	void addEnemies();
+	/* I defined this function to be called each tick in the move() func.
+	 * Each tick it runs a random number generator to see whether or not
+	 * new enemies should be added to the world. If they should, it calls
+	 * addInsect with the ID of the insect to be added.
+	 */
+	
+	void addInsect(int id);
+	/* This function adds an insect of the specified type to the world. 
+	 * Depending on the type it adds it at different (x,y) coordinates
+	 * and initializes it with different values.
+	 */ 	
+
+	void removeDeadGameObjects();
+	/* This is a simple cleanup function called at the end of move(). It 
+	 * checks every insect and mushroom to see if they died in the previous
+	 * tick, and deletes them if they have.
+	 */
+
+	bool mushroomOnSquare(int x, int y, int& index);
+	/* This function returns true if there is a mushroom of either type on
+	 * the specified (x,y) coordinate, and also gives the index in the
+	 * vector array at which the mushroom can be found. I defined this 
+	 * function to save some time with the Insect functions that had
+	 * to check whether a mushroom was on a square when moving.
+	 */
+
+	void setPlayer(Player* p);
+	Player* getPlayer();
+	/* These are basic mutator and accessor functions for the studentWorld, 
+	 * either accessing or setting the current player object in the world.
+ 	 */
+
+	void setActor(Actor* m);
+	/* This inserts an Insect or Mushroom into the m_actor vector.
+	 */
+
+	Actor* getActor(int i=0);
+	/* Returns the actor at index i in the vector. Useful for certain
+	 * functions where the (x,y) coords are not known, but the index is.
+	 */
+
+	Actor* getActorAt(int x, int y, int& id);
+	/* A more traditional accessor that returns a pointer to the Actor at
+	 * the given (x,y) coordinates. It also sets the int ref id to be the 
+	 * object's id, just for convenience.
+	 */ 
+
+	int numActors();
+	/* Returns the number of non-player actors in the world. */
+};
+
+STRUCTURE OF ACTOR CLASSES:
+GraphObj
+     --Actor
+          --Player
+          --Insect
+               --ScentipedeSeg
+               --Spider
+               --Scorpion
+               --Flea
+          --ActorWLives
+               --Mushroom
+               --WaterDroplet
+
+class Actor : public GraphObject
+{
+public:
+	Actor(int id, StudentWorld* world);
+	virtual ~Actor();
+	/* Constructor and destructor. The constructor passes the object id to
+	 * the GraphObject class, and sets a private pointer to the inputted
+	 * StudentWorld. The destructor does nothing
+	 */
+
+	virtual void doSomething() = 0;
+	virtual void isAttacked(Actor* attacker) = 0;
+	virtual int isAlive() = 0;
+	/* I declared all of these functions as pure virtual. doSomething()
+	 * is totally pointless to implement, because what the Actor has to
+	 * do is completely dependent on what type of actor it is. Similarly, 
+	 * different subclasses of Actors all have different behavior when
+	 * attacked and different criteria for being considered alive.
+	 */
+
+	StudentWorld* getWorld();
+	/* Returns the current studentWorld. */
+};
+
+class Player : public Actor
+{
+public:
+	Player(StudentWorld* world);
+	virtual ~Player();
+	/* The constructor passes through to the Actor constructor the 
+	 * players ID and the world it is initialized into. It also sets
+	 * the player up at its initial location and initializes all the
+	 * private variables. The destructor does nothing and is a placeholder.
+	 */
+
+	virtual void doSomething();
+	/* doSomething() is virtual here because it redefines the class in 
+	 * Actor. It gets the keyboard input and moves the player accordingly.
+	 */	
+
+	virtual void isAttacked(Actor* attacker);
+	/* Again, this redefines the Actor function to specify what the Player
+	 * class does in this situation. In every case the player dies if it
+	 * is attacked. 
+	 */
+
+	void tryMove(int x, int y);
+	/* This function is unique to the Player class and is used to test
+	 * whether the player can move onto an adjacent square if prompted
+	 * by the user.
+	 */ 	
+
+	virtual int isAlive();
+	/* Redefining the class in Actor to specify when the Player is alive;
+	 * in this case, it is always true until some Insect runs into it.
+	 */
+};
+
+class Insect : public Actor
+{
+public:
+	Insect(int id, int x, int y, StudentWorld* world);
+	virtual ~Insect();
+	/* The insect constructor passes the inputted ID and world to the Actor
+	 * constructor, while setting the insect's x and y coordinates using
+	 * functions from GraphObj class. The destructor again does nothing.
+	 */
+
+	
+	virtual int	 isAlive();
+	/* The Insect class can define the isAlive() class for all 4 types of 
+	 * insects as they all have the same death condition. They are all killed
+	 * by one shot from the player.
+	 */
+
+	void		setAlive(bool a);
+	/* Can be called to set the Insect to dead/alive */
+
+
+	virtual void doSomething() = 0;
+	virtual void isAttacked(Actor* attacker) = 0;
+	/* The Insect class still cannot define these functions because
+	 * each indivual insect has different behavior when asked to do
+	 * something, and different behavior when attacked. So we leave them 
+	 * abstract.
+	 */
+};
+
+class ScentipedeSeg : public Insect
+{
+public: 
+	ScentipedeSeg(int x, int y, StudentWorld* world);
+	virtual ~ScentipedeSeg();
+	/* The constructor passes all arguments to the Insect constructor, 
+	 * in addition to the ScentipedeSeg's ID. 
+ 	 */
+
+	virtual void doSomething();
+	/* Here we can define the movement for the Scentipede in particular,
+	 * so when an Actor is told to doSomething() it exhibits the Scentipede
+	 * behavior if it is a Scentipede. 
+	 */
+	virtual void isAttacked(Actor* attacker);
+ 	/* Also, Scentipedes react uniquely to being attacked, so we redefine
+	 * the isAttacked function as well.
+	 */
+	bool isPoisoned();
+	/* Simple function that returns whether or not the Segment is poisoned. */
+};
+
+class Spider : public Insect
+{
+public:
+	Spider(int x, int y, StudentWorld* world);
+	virtual ~Spider();
+	/* Identical to the ScentipedeSeg except it passes an ID of Spider. */
+
+	virtual void doSomething();
+	virtual void isAttacked(Actor* attacker);
+	/* All insects act differently, so we individually redefine the do
+	 * Something and isAttacked functions to specify what they do.
+	 */
+};
+
+Scorpion and Flea are identical to Spider, except their constructors pass their
+respective IDS, and their redefinied virtual functions specify their specific 
+behavior instead of the Spider's.
+
+class ActorWLives : public Actor
+{
+public:
+	ActorWLives(int id, int x, int y, StudentWorld* world);
+	virtual ~ActorWLives();
+	/* The ActorWLives constructor just passes all the inputs up to the
+	 * Actor constructor, while calling setLocation(x,y) from GraphObj.
+	 */
+
+	void setLives(int l);
+	int getLives();
+	/* These functions are defined and used by ActorWLives subclasses to 	
+	 * set and get their number of lives remaining. They don't need to be 
+	 * virtual because every subclass accesses and sets their lives in the
+	 * same way. 
+	 */
+
+	virtual int isAlive();
+	/* We can define isAlive() here, rather than passing it again to the
+	 * subclasses, because each ActorWLives is determined to be "alive" if 
+	 * it's number of lives is > 0.
+ 	 */
+
+	virtual void doSomething() = 0;
+	virtual void isAttacked(Actor* attacker) = 0;
+	/* Each subclass reacts differently when asked to doSomething and when
+	 * it is attacked, so we do not define these functions here and pass
+	 * them on to the next level of subclasses.
+ 	 */
+};
+
+class Mushroom : public ActorWLives
+{
+public:
+	Mushroom(int x, int y, StudentWorld* world);
+	virtual ~Mushroom();
+	/* The constructor just passes all arguments to the ActorWLives
+	 * constructor. 
+	 */
+
+	virtual void doSomething();
+	/* Mushrooms do nothing when asked to do something, so this can be
+	 * defined as blank here. 
+	 */
+	virtual void isAttacked(Actor* attacker);
+	/* Mushrooms also react in a specific way to being attacked so this
+	 * is defined here as well. They simply decrement lives each time
+	 * they are shot until they die, then set theirselves to dead and are
+	 * removed next tick.
+	 */
+	
+};
+
+class WaterDroplet : public ActorWLives
+{
+public:
+	WaterDroplet(int x, int y, StudentWorld* world);
+	virtual ~WaterDroplet();
+	/* Again, all arguments are passed to the ActorWLives constructor, and
+	 * the destructor does nothing. 
+	 */
+
+
+	virtual void doSomething();
+	/* WaterDroplets have a defined behavior so we specify it here. They 
+	 * decrement their lives until they reach 0, and then disappear.
+	 */
+
+	virtual void isAttacked(Actor* attacker);
+	/* WaterDroplets are never attacked so this is defined as blank. */
+
+};
+
+2. I believe that I implemented all functionality in the game, unless there is 
+   something that I overlooked.
+
+3. I can't come up with a single ambiguous situation that was not solved by
+   more careful reading of the spec. I suppose for awhile it was unclear what
+   to do if a poisoned Scentipede encountered a normal one but I think it was
+   actually covered in the spec and my program exhibited the correct behavior 
+   anyways.
+
+4. 
+StudentWorld: to test this class I ran it a couple times through the debugger
+	and stepped through its instructions with breakpoints, specifically the init() and 
+	move() functions. It was rather hard to test without getting other 
+	classes to work first, so mostly I just trusted that my logic was
+	correct while stepping through and fixed any problems as they came up.
+	For the most part it didn't require too much testing though, as the 
+	functions for the most part just called Actor functions.
+
+Actor: for each subclass of Actor I isolated it and then generated many versions
+	using test code in the StudentWorld class. Then I would play around
+	and make sure it followed the correct behavior. For the Scentipede in
+	particular, I first spawned one segment at a time every 10 seconds and
+	made sure that they successfully navigated the screen. Then I added
+	some mushrooms to see if they could dodge those, etc. The other actors
+	besides the player had easy behavior to judge and I could quickly tell
+	if they were doing the right thing. I would spawn one every couple of 
+	seconds and check what was going on -- if anything was off, I would know
+	the code was wrong. It was simple, really. A hard part to test was the random
+	percentages -- you can't just look at a flea and tell if it is generating
+	mushrooms at 33% or 25%. For that part I just had to trust my code I guess,
+	but I am extremely sure that it is correct for the randomness anyways.
+
+	For the player, I made sure each key worked and that it could only
+	move to the squares indicated by the spec. Then I checked if it was correctly
+	not moving onto squares with Mushrooms, and finally checked its collision
+	with each type of Insect to make sure the game was correctly handling deaths.
+
+Overall I feel debugging went pretty smoothly and did not take a lot of time, mainly
+because I built incrementally and tested each new implementation right as I coded it.
+At the end it didn't seem like much more testing needed to be done because everything
+worked up to that point. However, I was still diligent in checking all cases, even the
+very rare ones, using test code. I was unable, however, to test my program's behavior 
+when test parameters are inputted. I'm not sure if this was indicated in the spec or not --
+I couldn't find it -- but I guess I can only hope my program performs correctly!

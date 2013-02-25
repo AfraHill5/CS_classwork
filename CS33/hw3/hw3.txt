@@ -1,0 +1,165 @@
+3.37
+M = 5
+N = 7
+
+3.39
+A.
+offsets:
+p: 0
+s.x: 4
+s.y: 8
+next: 12
+
+B.
+16
+
+C.
+void sp_init (struct prop *sp)
+{
+	sp->s.x = sp->s.y;
+	sp->p = &(sp->s.x);
+	sp->next = &sp;
+}
+
+3.42
+A. offsets:
+a: 0
+b: 4
+c: 8
+d: 16
+e: 20
+f: 24
+g: 32
+h: 40
+
+B. Total size = 48 bytes. 4 bytes are added to the end to satisfy the 
+alignment requirements.
+
+C.
+c, g are 8 bytes long
+a, e, h are 4 bytes long
+b is 2 bytes long
+d, f are 1 byte long.
+Therefore they should be arranged like
+
+c: 0
+g: 8
+a: 16
+e: 20
+h: 24
+b: 28
+d: 30
+f: 31
+for a total size of only 32 bytes.
+
+3.43
+A. At line 7 the stack looks like this:
+
+08 04 86 43 	ret
+bf ff fc 94		ebp
+00 00 00 03 	edi
+00 00 00 02		esi
+00 00 00 01		ebx
+(undefined)
+(undefined)
+(undefined)
+
+B. At line 10 the stack looks like this
+
+08 04 86 00 	ret
+33 32 31 30		(ebp)
+39 38 37 36 	(edi)
+35 34 33 32		(esi)
+31 30 39 38		(edx)
+37 36 35 34
+33 32 31 30		 esp points here
+(undefined)
+The extra long buffer input overwrites much of the stack.
+
+C. Instead of returning to 0x08048643 it attempts to return to 
+0x08048600.
+
+D. ebp, edi, esi, and edx all have corrupt values because their values have
+been overwritten by the buffer.
+
+E. Malloc doesn't make room for the null terminator at the end of the buffer.
+It also doesn't check for NULL input.
+
+5.1
+If the procedure is called with xp==yp, it will set xp/yp to be equal to 0.
+
+5.3
+x = 10;
+y = 100;
+
+A.
+for (i = min(x,y); i < max(x,y); incr(&i,1))
+	t+= square(i);
+	
+min: 1 call
+max: 91 calls
+incr: 90 calls
+square: 90 calls
+
+B.
+for (i = max(x,y)-1; i >= min(x,y); incr(&i,-1))
+	t+= square(i);
+	
+min: 91 calls
+max: 1 call
+incr: 90 calls
+square: 90 calls
+
+C.
+int low = min(x,y);
+int high = max(x,y);
+
+for(i = low; i < high; incr(&i, 1))
+	t += square(i);
+
+min: 1 call
+max: 1 call
+incr: 90 calls
+square: 90 calls
+
+5.7
+void combine5_5k(vec_ptr v, data_t *dest)
+{
+	long int i;
+	long int length = vec_length(v);
+	long int limit = length-4;
+	data_t *data = get_vec_start(v);
+	data_t acc = IDENT;
+	
+	/*combine 5 elements at a time*/
+	for (i = 0; i < limit; i+=5) {
+		acc = ((((acc OP data[i])
+				OP data[i+1])
+				OP data[i+2])
+				OP data[i+3])
+				OP data[i+4];
+	}
+	
+	/*finish any remaining*/
+	for (; i<length; i++) {
+		acc = acc OP data[i];
+	}
+	
+	*dest = acc;
+}
+
+5.12
+void psum1(float a[], float p[], long int n)
+{
+	long int i;
+	float prev = p[0] = a[0];
+	float curr;
+	for (i = 1; i < n; i++)
+	{
+		curr = prev + a[i];
+		p[i] = curr;
+		prev = curr;
+	}
+		
+}
+

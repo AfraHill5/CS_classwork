@@ -1,0 +1,120 @@
+6.30
+A.
+ 11  10  9   8   7   6   5   4   3   2   1   0
+ CT  CT  CT  CT  CT  CT  CT  CT  CI  CI  CO  CO
+      tag                         set     offset
+B.
+Read 0x834 ->
+ CT  CT  CT  CT  CT  CT  CT  CT  CI  CI  CO  CO
+ 1   0   0   0   0   0   1   1   0   1   0   0
+tag = 0x83
+set = 1
+offset = 0
+
+hit? NO (valid bit set to 0)
+
+Write 0x836 ->
+ CT  CT  CT  CT  CT  CT  CT  CT  CI  CI  CO  CO
+ 1   0   0   0   0   0   1   1   0   1   1   0
+tag = 0x83
+set = 1
+offset = 2
+
+hit? YES -> will send write instruction down a level because valuebit = 0
+
+Read 0xFFD ->
+ CT  CT  CT  CT  CT  CT  CT  CT  CI  CI  CO  CO
+ 1   1   1   1   1   1   1   1   1   1   0   1
+tag = 0xff
+set = 3
+offset = 1
+
+hit? YES
+read value? 0xc0
+
+6.31
+A.
+Size in Bytes = C = SxBxE
+S = # Sets = 8
+B = Block size = 4 bytes
+E = # Lines/Set = 4
+
+C = 8x4x4 = 128 bytes
+
+B.
+ 12  11  10  9   8   7   6   5   4   3   2   1   0
+ CT  CT  CT  CT  CT  CT  CT  CT  CI  CI  CI  CO  CO
+         tag                      set         offset
+		 
+6.32
+A.
+address = 0x071a 
+ CT  CT  CT  CT  CT  CT  CT  CT  CI  CI  CI  CO  CO
+ 0   0   1   1   1   0   0   0   1   1   0   1   0 
+tag = 0x38
+set = 6
+offset = 2
+
+Byte value = 0xeb
+
+6.35
+typedef int array[4][4];
+
+void transpose2(array dst, array src)
+{
+	int i, j;
+	for (i = 0; i < 4; i++)
+		for (j = 0; j < 4; j++)
+			dst[j][i] = src[i][j];
+}
+
+Assume:
+- sizeof(int) == 4
+- src array starts at address 0, dst starts at address 64
+- the L1 cache is direct-mapped, write-through, write-allocate with
+	block size of 16 bytes
+- the cache has total size 32 data bytes and initially empty
+
+A.
+	dst array							src array
+	0	1	2	3						0	1	2	3
+0	m  	h	h	h					0	m   h   h   h
+1	m 	h	h	h					1	m	h	h	h
+2	m	h	h	h					2	m	h	h	h
+3	m	h	h	h					3	m	h	h	h
+
+6.39
+Assume we have a 2048-byte cache with 32-byte blocks.
+
+struct point_color {
+	int c;
+	int m;
+	int y;
+	int k;
+};
+
+struct point_color square[16][16];
+int i, j;
+
+for (i = 0; i < 16; i++) {
+	for (j = 0; j < 16; j++) {
+		square[i][j].c = 0;
+		square[i][j].m = 0;
+		square[i][j].y = 1;
+		square[i][j].k = 0;
+	}
+}
+
+A. What is the total # of writes?
+16 * 16 * 4 = 1024
+
+B. What is the total # of writes that miss the cache?
+128
+
+C. What is the miss rate?
+1/8 or 12.5%
+Since the blocks are 32 bytes large, and the loop accesses every element
+of the array in order, every miss loads the current element and the next
+7 to be operated on (4 byte ints, 32 byte blocks.) Thus the miss rate
+is only 1/8
+

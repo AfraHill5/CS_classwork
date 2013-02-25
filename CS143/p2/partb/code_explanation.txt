@@ -1,0 +1,10 @@
+Our code changes for part B were fairly simple. Mostly we just reused the Copycat code and made a couple of small
+changes to fit the spec.
+
+In the HTML file, we removed the simple textbox and added an HTML option menu. It was given the name "menu" so its
+value could be referenced in the Java interface file, and loaded with 5 options, the first of which was the default
+selection. We kept the same submit button as its functionality was universal between the two.
+
+The Java file was then modified only slightly: the input to request.getParameter is now given as "menu" as that is the 
+name of our HTML menu and we want to get the data from that. The rest of the file was basically unchanged as the output
+HTML file is exactly the same formatting.

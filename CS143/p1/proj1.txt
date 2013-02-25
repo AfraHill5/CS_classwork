@@ -1,0 +1,116 @@
+2
+(a)
+select author_name
+from Author
+where first_name = 'Kevin';
+
+(b)
+select author_name, preferred_name
+from Author
+where author_name <> preferred_name
+order by author_name, preferred_name;
+
+3
+ 
+(a)
+1.
+select ID
+from CoAuthored
+group by Author1ID, Author2ID, paper_id
+having count(paper_id) > 1;
+
+2.
+alter table CoAuthored
+add primary key (ID);
+
+3.
+alter table CoAuthored
+add constraint ID unique (author1ID, author2ID, paper_ID);
+
+insert into CoAuthored values(999999, 42673, 34481, 9201001);
+ERROR 1062 (23000): Duplicate entry '42673-34481-9201001' for key 'ID'
+
+(b)
+1.
+select author1ID
+from CoAuthored
+where author1ID not in
+	(select ID
+	 from Author); 
+
+2. 	 
+--Change the default storage engine to support foreign keys first
+alter table CoAuthored engine = InnoDB;
+alter table Author engine = InnoDB;
+
+alter table CoAuthored
+add foreign key (author1ID)
+references Author(ID)
+on delete cascade
+on update cascade;
+
+3. 
+--Try to add a blocked value
+mysql> insert into CoAuthored values (0, 1, 2, 3);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails
+    (`cs143s15`.`CoAuthored`, CONSTRAINT `CoAuthored_ibfk_1` FOREIGN KEY (`author1ID`) 
+	REFERENCES `Author` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE)
+
+--delete an author
+
+mysql> delete from Author where ID = 34481;
+Query OK, 1 row affected (0.00 sec)
+
+--check that the cascade worked and the corresponding CoAuthored value was deleted
+
+mysql> select * from CoAuthored where author1ID = 34481;
+Empty set (0.00 sec)
+
+-- add the values back when done
+
+mysql> insert into Author values(34481, 'C.Itzykson', 'C.Itzykson', 'C.', 'Itzykson');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into CoAuthored values(58518, 34481, 42673, 9201001);
+Query OK, 1 row affected (0.00 sec)
+
+--check that if Author is updated it will update CoAuthored
+
+update Author 
+set ID = 0
+where ID = 34481;
+
+select * from CoAuthored where author1ID = 0;
+
+(c)
+1.
+alter table CoAuthored
+add foreign key (author2ID)
+references Author(ID)
+on delete cascade
+on update cascade;
+
+2. 
+later
+
+4
+(a)
+select distinct Author.author_name
+from Author join CoAuthored
+on Author.ID = CoAuthored.author1ID and author2ID = 42673
+or Author.ID = CoAuthored.author2ID and author1ID = 42673;
+
+(b)
+select Author.author_name
+from Author join CoAuthored
+on Author.ID = CoAuthored.author1ID -- don't need 2 because every value is both backwards and forwards
+group by author_name
+having count(author_name) > 10
+order by count(author_name);
+
+5
+select Author.author_name, count(author_name)
+from Author join CoAuthored
+on Author.ID = CoAuthored.author1ID
+group by author_name
+order by count(author_name) DESC;

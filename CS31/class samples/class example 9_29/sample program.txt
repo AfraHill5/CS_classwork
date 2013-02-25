@@ -1,0 +1,12 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+	cout << "How many hours did you work? ";
+	double hoursWorked;
+	cin >> hoursWorked;
+
+	cout << "What is your hourly rate of pay? ";
+	double payRate;
+	cin >> payRate;

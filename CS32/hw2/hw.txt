@@ -1,0 +1,43 @@
+Zach North
+603 885 768
+Homework 2
+
+#2. The first 12 Coords popped off the stack using the supplied main() have (r,c) values:
+
+(6,3)
+(6,4)
+(7,4)
+(8,4)
+(8,3)
+(8,2)
+(7,2)
+(5,4)
+(5,5)
+(5,6)
+(6,6)
+(7,6)
+ ...
+
+#4. The first 12 coords dequeued using the supplied main() have (r,c) values:
+
+(6,3)
+(5,3)
+(6,2)
+(6,4)
+(4,3)
+(5,4)
+(7,2)
+(7,4)
+(4,2)
+(5,5)
+(8,2)
+(8,4)
+
+
+These two algorithms differ in the way they "follow" possible paths. The stack function runs the most
+recently added coordinates first; in this way it follows any possible paths outward, all the way to their end, only stopping
+when they hit a wall or there is no further progress to be made. The queue function just slowly creeps outward from 
+the starting point, adding a coordinate from each possible path one step at a time and then moving onto another
+possible path. Both are absolutely viable and it picking one over the other simply depends on which way suits 
+the surrounding implementation.
+

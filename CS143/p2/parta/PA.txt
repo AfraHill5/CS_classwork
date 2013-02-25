@@ -1,0 +1,175 @@
+The first query:
+
+SELECT count(*) 
+FROM Author AS A, CoAuthored AS C
+WHERE A.first_name = 'John' and C.author1ID = A.ID;
+
+Ran 10 times without index:
+0.00222100
+0.00088600
+0.00088600
+0.00088500
+0.00089100
+0.00088600
+0.00089400
+0.00089100
+0.00088700
+0.00088500
+------------
+Avg runtime: 
+0.00102120
+
+To optimize COUNT, we would want an index that is ideal for quickly reading through all the records in order --
+namely, not a hash index. In this case I think a normal B+ index will suffice.
+
+For the first query, a useful index would be to create a B+ index on A.first_name (as Author by default is only indexed
+on ID.) This would allow it to search for the first name much more quickly and perform the first part of the WHERE 
+clause faster. 
+
+mysql> create index FNIndex on Author(first_name);
+Query OK, 1840 rows affected (0.09 sec)
+Records: 1840  Duplicates: 0  Warnings: 0
+
+Ran 10 times:
+0.00031500
+0.00017900
+0.00017800
+0.00017800
+0.00017900
+0.00017800
+0.00017700
+0.00017800
+0.00017900
+0.00018000 
+-----------
+Avg runtime:
+0.00019210
+
+This is roughly 5x faster than the operation without indexing.
+
+The obvious second optimization would be to index C.author1ID for faster lookup. Since Author.ID is already
+indexed, this would allow the comparison C.author1ID = A.ID to be performed extremely quickly.
+
+mysql> drop index FNIndex on Author;
+Query OK, 1840 rows affected (0.04 sec)
+Records: 1840  Duplicates: 0  Warnings: 0
+
+mysql> create index A1IDIndex on CoAuthored(author1ID);
+Query OK, 21950 rows affected (0.51 sec)
+Records: 21950  Duplicates: 0  Warnings: 0
+
+Ran 10 times:
+0.00242200 
+0.00089300
+0.00088600
+0.00090100
+0.00088400
+0.00101800
+0.00090000 
+0.00088300
+0.00089400 
+0.00089700
+-----------
+Avg runtime:
+0.00105780
+
+This index doesn't increase performance at all. However, inspecting the EXPLAIN option for the command indicates that
+the index is being used:
+
+mysql> explain SELECT count(*) FROM Author AS A, CoAuthored as C WHERE A.first_name = 'John' and C.author1ID = A.ID;
++----+-------------+-------+------+---------------+------+---------+---------------+------+--------------------------+
+| id | select_type | table | type | possible_keys | key  | key_len | ref           | rows | Extra                    |
++----+-------------+-------+------+---------------+------+---------+---------------+------+--------------------------+
+|  1 | SIMPLE      | A     | ALL  | PRIMARY       | NULL | NULL    | NULL          | 1850 | Using where              |
+|  1 | SIMPLE      | C     | ref  | ID,A1IDIndex  | ID   | 5       | cs143s15.A.ID |    1 | Using where; Using index |
++----+-------------+-------+------+---------------+------+---------+---------------+------+--------------------------+
+
+So, while the performance increase is negligible for our set, the optimizer views it as being faster. It is possible that
+for larger sets it will impact performance more greatly.
+
+The second query is as follows:
+
+SELECT COUNT(*)
+FROM Author
+WHERE first_name = 'Kevin';
+
+Ran 10 times without index:
+0.00091400
+0.00083200
+0.00081800
+0.00081800
+0.00083400
+0.00083800
+0.00081700
+0.00083600
+0.00082300
+0.00083200
+-----------
+Avg runtime:
+0.00083620
+
+Since Author has only a primary index on ID, my first thought is to simply create an index on first_name.
+
+mysql> create index FirstNameIndex on Author(first_name);
+Query OK, 1840 rows affected (0.12 sec)
+Records: 1840  Duplicates: 0  Warnings: 0
+
+Ran 10 times:
+0.00081100
+0.00014900
+0.00014600
+0.00014600
+0.00014600
+0.00014700
+0.00015700
+0.00014600
+0.00014600
+0.00014700
+-----------
+Avg runtime:
+0.00021410
+
+This is about 4x faster than running the query without any index.
+
+While this seems to be the only intuitive index possible on this selection, it is also possible that an index on last_name
+would speed up the selection due to the way the table is physically stored. While the index would not lead directly to the
+required first_name, the last_name is so close in memory that it would not have to read very far to find it.
+
+mysql> drop index FirstNameIndex on Author;
+Query OK, 1840 rows affected (0.05 sec)
+Records: 1840  Duplicates: 0  Warnings: 0
+
+mysql> create index LastNameIndex on Author(last_name);
+Query OK, 1840 rows affected (0.06 sec)
+Records: 1840  Duplicates: 0  Warnings: 0
+
+Ran the query 10 times:
+0.00092900
+0.00077700
+0.00067100
+0.00090100
+0.00077400
+0.00077700
+0.00078400
+0.00076500
+0.00076500
+0.00078700
+-----------
+Avg runtime:
+0.00079300
+
+The runtime is slightly faster with this index, but if we use the explain command we can see that the system does not
+actually use the index in its query.
+
+mysql> explain SELECT COUNT(*) FROM Author WHERE first_name = 'Kevin';
++----+-------------+--------+------+---------------+------+---------+------+------+-------------+
+| id | select_type | table  | type | possible_keys | key  | key_len | ref  | rows | Extra       |
++----+-------------+--------+------+---------------+------+---------+------+------+-------------+
+|  1 | SIMPLE      | Author | ALL  | NULL          | NULL | NULL    | NULL | 1900 | Using where |
++----+-------------+--------+------+---------------+------+---------+------+------+-------------+
+1 row in set (0.00 sec)
+
+Since, for every tuple in the relation, author_name begins with first_name, an index on author_name seems like it would
+provide a speedup similar to that of the first_name index. However, the query optimizer does not know of this relation
+between first_name and author_name (it merely sees them as two different attributes). So we observe relatively little
+speedup from this index.

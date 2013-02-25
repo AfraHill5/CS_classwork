@@ -1,0 +1,20 @@
+﻿Build started 2/9/2012 7:08:49 PM.
+     1>Project "C:\Users\Zach\Documents\UCLA\CS32_2\hw2\hw2.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\hw2.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zach\Documents\UCLA\CS32_2\hw2\Debug\hw2.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\hw2.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Zach\Documents\UCLA\CS32_2\hw2\Debug\hw2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zach\Documents\UCLA\CS32_2\hw2\Debug\hw2.lib" /MACHINE:X86 Debug\animal.obj
+         LINK : C:\Users\Zach\Documents\UCLA\CS32_2\hw2\Debug\hw2.exe not found or not built by the last incremental link; performing full link
+         hw2.vcxproj -> C:\Users\Zach\Documents\UCLA\CS32_2\hw2\Debug\hw2.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"C:\Users\Zach\Documents\UCLA\CS32_2\hw2\Debug\hw2.exe;#1" /manifest Debug\hw2.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\hw2.unsuccessfulbuild".
+         Touching "Debug\hw2.lastbuildstate".
+     1>Done Building Project "C:\Users\Zach\Documents\UCLA\CS32_2\hw2\hw2.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.42
